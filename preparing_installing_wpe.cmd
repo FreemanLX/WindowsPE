@@ -87,4 +87,4 @@ copy /y %WINVER%\System32\wkscli.dll %MOUNT%\Windows\System32\
 copy /y %WINVER%\System32\xmllite.dll %MOUNT%\Windows\System32\ 
 takeown /F %MOUNT%\Windows\System32\startnet.cmd
 del /S /F /Q %MOUNT%\Windows\System32\startnet.cmd
-
+copy startnet.cmd %MOUNT%\Windows\System32\
