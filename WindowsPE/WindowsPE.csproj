@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0D2C8C44-29A8-42C9-8C8D-3AA29832F60B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>WindowsPE</RootNamespace>
+    <AssemblyName>WindowsPE</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SimpleWifi">
+      <HintPath>..\..\..\..\Desktop\simplewifi-master\SimpleWifi\bin\Debug\SimpleWifi.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="about.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="about.Designer.cs">
+      <DependentUpon>about.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Browser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Browser.Designer.cs">
+      <DependentUpon>Browser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="connect_to_wifi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="connect_to_wifi.Designer.cs">
+      <DependentUpon>connect_to_wifi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data.cs" />
+    <Compile Include="display.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="display.Designer.cs">
+      <DependentUpon>display.cs</DependentUpon>
+    </Compile>
+    <Compile Include="File explorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="File explorer.Designer.cs">
+      <DependentUpon>File explorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="networking.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="networking.Designer.cs">
+      <DependentUpon>networking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="password.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="password.Designer.cs">
+      <DependentUpon>password.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="rename.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="rename.Designer.cs">
+      <DependentUpon>rename.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Toolkit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Toolkit.Designer.cs">
+      <DependentUpon>Toolkit.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="about.resx">
+      <DependentUpon>about.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Browser.resx">
+      <DependentUpon>Browser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="connect_to_wifi.resx">
+      <DependentUpon>connect_to_wifi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="display.resx">
+      <DependentUpon>display.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="File explorer.resx">
+      <DependentUpon>File explorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="networking.resx">
+      <DependentUpon>networking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="password.resx">
+      <DependentUpon>password.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="rename.resx">
+      <DependentUpon>rename.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolkit.resx">
+      <DependentUpon>Toolkit.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Settings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

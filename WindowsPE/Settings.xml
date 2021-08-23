@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <Design name ="design">
+       <Color name ="color"> Blue </Color>  
+       <Theme theme ="theme">1</Theme>
+       <Resolution name ="resolution"></Resolution>
+      <Opacity name ="opacity"> 8 </Opacity>
+      <Wallpaper name="wapp"> </Wallpaper>
+  </Design>  
+  <Tools tools ="tools"></Tools>
+</root>  
