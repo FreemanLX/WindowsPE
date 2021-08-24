@@ -185,10 +185,7 @@ namespace WindowsPE
 
         Pair<string, bool> move;
 
-        private void move_a_file(string selected_path, bool save_last_location)
-        {
-            move = new Pair<string, bool>(selected_path, save_last_location);
-        }
+        private void move_a_file(string selected_path, bool save_last_location) => move = new Pair<string, bool>(selected_path, save_last_location);
 
         private void delete(string selected_path)
         {
@@ -361,8 +358,8 @@ namespace WindowsPE
 
         private void listView1_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
         {
-            e.Graphics.FillRectangle(new System.Drawing.SolidBrush(Data.theme), e.Bounds);
-            using (System.Drawing.SolidBrush foreBrush = new System.Drawing.SolidBrush(Data.fortheme))
+            e.Graphics.FillRectangle(new SolidBrush(Data.theme), e.Bounds);
+            using (SolidBrush foreBrush = new SolidBrush(Data.fortheme))
             {
                 StringFormat sf = new StringFormat
                 {
@@ -374,11 +371,7 @@ namespace WindowsPE
             }
         }
 
-        private void listView1_DrawItem(object sender, DrawListViewItemEventArgs e)
-        {
-            e.DrawDefault = true;
-
-        }
+        private void listView1_DrawItem(object sender, DrawListViewItemEventArgs e) => e.DrawDefault = true;
 
         private void listView1_DrawSubItem(object sender, DrawListViewSubItemEventArgs e) => e.DrawDefault = true;
     }

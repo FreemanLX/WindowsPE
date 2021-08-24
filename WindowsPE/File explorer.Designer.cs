@@ -173,7 +173,7 @@
             this.ClientSize = new System.Drawing.Size(1008, 729);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Name = "File_explorer";
-            this.Text = "08m jc /.//00";
+            this.Text = "File Explorer";
             this.Load += new System.EventHandler(this.File_explorer_Load);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
