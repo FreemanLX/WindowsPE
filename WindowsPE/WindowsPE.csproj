@@ -8,73 +8,133 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>WindowsPE</RootNamespace>
     <AssemblyName>WindowsPE</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>false</DebugSymbols>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SimpleWifi">
-      <HintPath>..\..\..\..\Desktop\simplewifi-master\SimpleWifi\bin\Debug\SimpleWifi.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\SimpleWifi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="about.cs">
+    <Compile Include="AdaptiveMethods.cs" />
+    <Compile Include="ExternalMethods.cs" />
+    <Compile Include="LabelMJS.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LoadingScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadingScreen.Designer.cs">
+      <DependentUpon>LoadingScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Metro.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="about.Designer.cs">
-      <DependentUpon>about.cs</DependentUpon>
+    <Compile Include="Metro.Designer.cs">
+      <DependentUpon>Metro.cs</DependentUpon>
     </Compile>
-    <Compile Include="Browser.cs">
+    <Compile Include="OpenFileName.cs" />
+    <Compile Include="Restart.cs" />
+    <Compile Include="Settings\AboutForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\ColorsForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\ColorsForm.Designer.cs">
+      <DependentUpon>ColorsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Wifi\WifiConnection.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Browser.Designer.cs">
-      <DependentUpon>Browser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="connect_to_wifi.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="connect_to_wifi.Designer.cs">
-      <DependentUpon>connect_to_wifi.cs</DependentUpon>
+    <Compile Include="Settings\Wifi\WifiConnection.Designer.cs">
+      <DependentUpon>WifiConnection.cs</DependentUpon>
     </Compile>
     <Compile Include="Data.cs" />
-    <Compile Include="display.cs">
+    <Compile Include="Settings\DisplayForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="display.Designer.cs">
-      <DependentUpon>display.cs</DependentUpon>
+    <Compile Include="Settings\DisplayForm.Designer.cs">
+      <DependentUpon>DisplayForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="File explorer.cs">
+    <Compile Include="File Explorer\File explorer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="File explorer.Designer.cs">
+    <Compile Include="File Explorer\File explorer.Designer.cs">
       <DependentUpon>File explorer.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
@@ -83,61 +143,56 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="networking.cs">
+    <Compile Include="Settings\NetworkForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="networking.Designer.cs">
-      <DependentUpon>networking.cs</DependentUpon>
+    <Compile Include="Settings\NetworkForm.Designer.cs">
+      <DependentUpon>NetworkForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="password.cs">
+    <Compile Include="Settings\Wifi\WifiPassword.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="password.Designer.cs">
-      <DependentUpon>password.cs</DependentUpon>
+    <Compile Include="Settings\Wifi\WifiPassword.Designer.cs">
+      <DependentUpon>WifiPassword.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="rename.cs">
+    <Compile Include="Settings\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="rename.Designer.cs">
-      <DependentUpon>rename.cs</DependentUpon>
+    <Compile Include="Settings\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Settings.Designer.cs">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Toolkit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Toolkit.Designer.cs">
-      <DependentUpon>Toolkit.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="about.resx">
-      <DependentUpon>about.cs</DependentUpon>
+    <Compile Include="ThreadException.cs" />
+    <EmbeddedResource Include="LoadingScreen.resx">
+      <DependentUpon>LoadingScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Browser.resx">
-      <DependentUpon>Browser.cs</DependentUpon>
+    <EmbeddedResource Include="Metro.resx">
+      <DependentUpon>Metro.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="connect_to_wifi.resx">
-      <DependentUpon>connect_to_wifi.cs</DependentUpon>
+    <EmbeddedResource Include="Settings\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="display.resx">
-      <DependentUpon>display.cs</DependentUpon>
+    <EmbeddedResource Include="Settings\ColorsForm.resx">
+      <DependentUpon>ColorsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="File explorer.resx">
+    <EmbeddedResource Include="Settings\Wifi\WifiConnection.resx">
+      <DependentUpon>WifiConnection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\DisplayForm.resx">
+      <DependentUpon>DisplayForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="File Explorer\File explorer.resx">
       <DependentUpon>File explorer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="networking.resx">
-      <DependentUpon>networking.cs</DependentUpon>
+    <EmbeddedResource Include="Settings\NetworkForm.resx">
+      <DependentUpon>NetworkForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="password.resx">
-      <DependentUpon>password.cs</DependentUpon>
+    <EmbeddedResource Include="Settings\Wifi\WifiPassword.resx">
+      <DependentUpon>WifiPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -149,14 +204,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="rename.resx">
-      <DependentUpon>rename.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Settings.resx">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Toolkit.resx">
-      <DependentUpon>Toolkit.cs</DependentUpon>
+    <EmbeddedResource Include="Settings\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
@@ -170,10 +219,24 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Settings.xml" />
+    <Content Include="Settings\Settings.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,16 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
+using System.IO;
 using System.Net.NetworkInformation;
+using System.Reflection;
+using System.Windows.Forms;
 
-
-namespace WindowsPE
+namespace Browser
 {
     public partial class Main : Form
     {
-        public Main() => InitializeComponent();
-        int opaque = 250;
-        public void Change_to_form_threading(Form form, bool dialog = false)
+        int hResult = 0;
+        public Main(int result) 
+        {
+            InitializeComponent();
+            hResult = result;
+        }
+
+
+        public void ThreadedMovingForm(Form form, bool dialog = false)
         {
             if (dialog == false) form.Show();
             else form.ShowDialog();
@@ -18,8 +26,9 @@ namespace WindowsPE
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            networking_thread.Abort();
-            theme.Abort();
+            ResolutionThread.Abort();
+            EthernetThread.Abort();
+            ThemeThread.Abort();
             base.OnFormClosed(e);
         }
 
@@ -27,76 +36,139 @@ namespace WindowsPE
         {
             while (true)
             {
-                bool ava_net = false;
+                bool AvailableConnection = false;
                 try
                 {
-                     ava_net = new Ping().Send("google.com", 1000, new byte[32], new PingOptions()).Status == 0;
+                     AvailableConnection = new Ping().Send("google.com", 1000, new byte[32], new PingOptions()).Status == 0;
                 }
                 catch{}
-                if (ava_net != Data.connected_to_internet)
+                if (AvailableConnection != Data.Connected)
                 {
-                    Data.connected_to_internet = ava_net;
-                    pictureBox1.Invoke(new Action(() => pictureBox1.Visible = ava_net));
+                    Data.Connected = AvailableConnection;
+                    EthernetPictureBox.Invoke(new Action(() => EthernetPictureBox.Visible = AvailableConnection));
+                }
+                System.Threading.Thread.Sleep(100);
+            }
+        }
+        
+
+
+        public void SetResolution()
+        {
+            while(true){
+                
+                int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+                int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+                if(Data.screenHeight != screenHeight || Data.screenWidth != screenWidth ){
+                    Invoke(new Action((() =>
+                    {
+                         EthernetPictureBox.Location = new Point(EthernetPictureBox.Location.X, screenHeight - 60);
+                         StartButton.Location = new Point(StartButton.Location.X, screenHeight / 2 - 20);
+                         ActivityList.Location = new Point(screenWidth - ActivityList.Size.Width, 0);
+                         ActivityList.Size = new Size(ActivityList.Size.Width, screenHeight);
+                         MetroObject.Size = new Size(screenWidth - 50, screenHeight - 200);
+                         Data.screenHeight = screenHeight;
+                         Data.screenWidth = screenWidth;
+                    })));
                 }
                 System.Threading.Thread.Sleep(100);
             }
         }
 
+        private void OnScroll(object sender, ScrollEventArgs e)
+        {
+            
+        }
 
 
-        System.Threading.Thread networking_thread, theme;
+        System.Threading.Thread EthernetThread, ThemeThread, ResolutionThread;
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.Name = "IntegrateOS Explorer";
+            
+            if(hResult != 0)
+            MessageBox.Show("Unable to enable firewall adapter. HResult code: " + hResult);
+            this.Name = "Explorer";
+            DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
             WindowState = FormWindowState.Maximized;
-            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
-            pictureBox1.Location = new Point(pictureBox1.Location.X, screenHeight - 50);
-            button1.Location = new Point(button1.Location.X, screenHeight - 50);
-            networking_thread = new System.Threading.Thread(() => CheckInternet());
-            networking_thread.Start();
-            theme = new System.Threading.Thread(() => set_theme());
-            theme.Start();
+            ResolutionThread = new System.Threading.Thread(() => SetResolution());
+            ResolutionThread.Start();
+            EthernetThread = new System.Threading.Thread(() => CheckInternet());
+            EthernetThread.Start();
+            StartButton.FlatAppearance.BorderSize = 0;
+            MetroObject.Scroll += new ScrollEventHandler(OnScroll);
             try
             {
-                
                 BackgroundImageLayout = ImageLayout.Stretch;
-                Image image = new Bitmap("@X:\\Windows\\System32\\winpe.jpg");
-                BackgroundImage = image;
+                string path = Path.GetPathRoot(Environment.SystemDirectory) + @"Windows\Web\Screen\img106.jpg";
+                Data.image = new Bitmap(path);
+                BackgroundImage = Data.image;
                 Refresh();
             }
             catch (Exception exc){
                 MessageBox.Show(exc.Message);
             }
+            ThemeThread = new System.Threading.Thread(() => SetTheme());
+            ThemeThread.Start();
+            Data.form = this;
         }
 
-        private void Set_transparency(Panel panel)
+        private void SetPanelColors()
         {
-            panel.BackColor = Color.FromArgb(Data.opaque, Data.color);
-            foreach(Control control in panel.Controls)
-            {
-                control.BackColor = Color.Transparent;
+            foreach(Control panelcontrol in this.MetroObject.Controls){
+                if(panelcontrol is Panel){
+                    panelcontrol.BackColor = Data.color;
+                    panelcontrol.BackColor = Color.FromArgb(Data.opaque, Data.color);
+                    foreach(Control control in panelcontrol.Controls)
+                    {
+                        control.BackColor = Color.Transparent;
+                    }
+                }
             }
         }
 
+        public void SetBackgroundImage()
+        {
 
-        private void set_theme()
+            BackgroundImage = Data.image;
+            BackgroundImageLayout = (ImageLayout)Data.fit;
+            Refresh();
+        }
+        private void SetTheme()
         {
             while (true)
             {
-                if(Data.opaque != opaque)
+                if(Data.fit != (int)BackgroundImageLayout || Data.image != BackgroundImage)
                 {
                     Invoke(new Action(() =>
                     {
-                        Set_transparency(panel4);
-                        Set_transparency(panel5);
-                        Set_transparency(panel1);
-                        Set_transparency(panel3);
+                        SetBackgroundImage();
                     }));
-                    opaque = Data.opaque;
+                }
+                if(this.MetroObject.Status.BackColor != Color.FromArgb(Data.opaque, Data.color))
+                {
+                    Invoke(new Action(() =>
+                    {
+                        SetPanelColors();
+                    }));
                 }
                 System.Threading.Thread.Sleep(100);
+            }
+        }
+
+        private void metro1_Scroll(object sender, ScrollEventArgs e)
+        {
+            
+        }
+
+        private void Main_MouseMove(object sender, MouseEventArgs e)
+        {
+            if(e.Location.X == Screen.PrimaryScreen.Bounds.Width - 10)
+            {
+                ActivityList.Visible = true;
+            }
+            if(e.Location.X < ActivityList.Location.X){
+                 ActivityList.Visible = false;
             }
         }
 
@@ -106,7 +178,7 @@ namespace WindowsPE
             {
                 try
                 {
-                    this.Close();
+                    WindowsPE.AdaptiveMethods.WPEInitialization("RebootW", "");
                 }
                 catch 
                 {
@@ -115,54 +187,14 @@ namespace WindowsPE
             }
         }
 
-        private void Panel1_MouseClick(object sender, MouseEventArgs e)
+        private void Main_Shown(object sender, EventArgs e)
         {
-            if (pictureBox1.Visible == true)
-            {
-                Change_to_form_threading(new Browser(), false);
-            }
-            else
-            {
-                MessageBox.Show("You aren't connected to the internet, please recheck your connection.");
-            }
+
         }
+        
+  
+    }  
+     
 
-        private void Panel3_MouseClick(object sender, MouseEventArgs e) => Change_to_form_threading(new Toolkit(), true);
 
-        private void Panel5_MouseClick(object sender, MouseEventArgs e) => Change_to_form_threading(new File_explorer(), false);
-
-        private void Panel7_MouseClick(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start("X:\\setup.exe");
-            }
-            catch(Exception)
-            {
-                MessageBox.Show("Unable to start the Windows Setup! Please retry or contact support!");
-            }
-        }
-
-        private void panel4_DoubleClick(object sender, EventArgs e) => Change_to_form_threading(new Settings(), false);
-
-        private void panel4_Click(object sender, EventArgs e) => Change_to_form_threading(new Settings(), false);
-
-        private void pictureBox4_Click(object sender, EventArgs e) => Change_to_form_threading(new Toolkit(), true);
-
-        private void pictureBox5_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start("X:\\setup.exe");
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Unable to start the Windows Setup! Please retry or contact support!");
-            }
-        }
-
-        private void pictureBox6_Click(object sender, EventArgs e) => Change_to_form_threading(new Settings(), false);
-
-        private void pictureBox3_Click(object sender, EventArgs e) => Change_to_form_threading(new File_explorer(), false);
-    }
 }
