@@ -1,19 +1,55 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
 
-namespace WindowsPE
+namespace Browser
 {
     public static class Data
     {
-        public static System.Drawing.Color color = System.Drawing.SystemColors.HotTrack; //blue
-        public static System.Drawing.Color theme = System.Drawing.Color.White;
-        public static System.Drawing.Color fortheme = System.Drawing.Color.Black;
-        public static bool connected_to_internet = false;
-        public static int opaque = 250;
+        public static Color color = Color.DarkViolet; //default
+        public static Color theme = Color.White;
+        public static Color fortheme = Color.Black;
+        public static bool Connected = false;
+        public static int opaque = 100;
+        public static Main form = null;
+        public static int fit = 3; ///fill
+        public static Image image;
+        public static int screenWidth = 0;
+        public static int screenHeight = 0;
+
+        public static String[] resolutions = null;
+
+        public static string ToString(this int fit)
+        {
+            switch (fit)
+            {
+                case 0: return "Fill";
+                case 1: return "Tile";
+                case 2: return "Center";
+                case 3: return "Stretch";
+                case 4: return "Zoom";
+                default: return null;
+            }
+        }
+
+        public static int ToFit(this string FitString)
+        {
+            switch (FitString)
+            {
+                case "Stretch":
+                     return (int)ImageLayout.Stretch;
+                case "Center":
+                     return (int)ImageLayout.Center;
+                case "Tile":
+                     return (int)ImageLayout.Tile;
+                case "Fill":
+                     return (int)ImageLayout.None;
+                case "Fit":
+                     return (int)ImageLayout.Zoom;
+                 default:
+                     return -1;
+            }
+        }
     }
 
     public class Pair<Tpair1, Tpair2>

@@ -1,0 +1,4 @@
+EXPORTS
+    DllMain @1
+    SomeFunction @2
+    _Z22ChangeScreenResolutionP10Resolution @3

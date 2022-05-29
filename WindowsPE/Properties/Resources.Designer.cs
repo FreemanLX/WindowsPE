@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WindowsPE.Properties {
+namespace Browser.Properties {
     using System;
     
     
