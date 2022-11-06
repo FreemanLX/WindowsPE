@@ -81,3 +81,16 @@ Installation:
 Because is a minimalistic shell, it doesn't contain anything really special, only a start menu, file explorer, SMB file sharing, firewall and some settings in GUI.
 
 Being also on the alpha part, the functionality is not yet completed, as some parts are missing.
+
+Below you will see some screenshots
+
+![image](https://user-images.githubusercontent.com/56113049/200154861-2bfc4f93-12bf-4217-920a-e27b39fd0aab.png)
+
+![image](https://user-images.githubusercontent.com/56113049/200154879-33723330-9f88-4e0d-86b7-39b71a48e108.png)
+
+![image](https://user-images.githubusercontent.com/56113049/200154891-77eaf8dc-3de1-4808-a213-719a84233463.png)
+
+![image](https://user-images.githubusercontent.com/56113049/200154906-0281e827-10d0-499c-a0a2-879698b2933a.png)
+
+![image](https://user-images.githubusercontent.com/56113049/200154930-55546655-3eed-4ff6-aa2e-0eb48c74b14d.png)
+
