@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace Browser
+namespace WindowsPE
 {
     public partial class File_explorer : Form
     {
@@ -25,7 +25,11 @@ namespace Browser
 
         DirectoryInfo DirectoryList;
         int index = 0;
-        public File_explorer() => InitializeComponent();
+        public File_explorer(){
+             InitializeComponent();
+             ContentList.SmallImageList = AdaptiveMethods.getIcons(); 
+            // ContentList.SmallImageList = AdaptiveMethods.getIcons();
+        }
         
         System.Collections.Generic.List<string> Forward = new System.Collections.Generic.List<string>();
         string backup;
@@ -55,7 +59,7 @@ namespace Browser
                 try
                 {
                     directory.GetDirectories();
-                    ListViewItem item = new ListViewItem(directory.Name, 0);
+                    ListViewItem item = new ListViewItem(directory.Name, 4);
                     item.SubItems.Add(directory.LastAccessTime.Date.ToString());
                     ContentList.Items.Add(item);
                 }
@@ -99,7 +103,6 @@ namespace Browser
         private void File_explorer_Load(object sender, EventArgs e)
         {
             FormBorderStyle = FormBorderStyle.None;
-            WindowState = FormWindowState.Maximized;
             Location.Text = Path.GetPathRoot(Environment.SystemDirectory);
             index++;
             LoadFromSelectedDirectory(Location.Text);
@@ -335,8 +338,8 @@ namespace Browser
 
         private void listView1_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
         {
-            e.Graphics.FillRectangle(new SolidBrush(Data.theme), e.Bounds);
-            using (SolidBrush foreBrush = new SolidBrush(Data.fortheme))
+            e.Graphics.FillRectangle(new SolidBrush(Color.White), e.Bounds);
+            using (SolidBrush foreBrush = new SolidBrush(Color.Black))
             {
                 StringFormat sf = new StringFormat
                 {
@@ -356,25 +359,37 @@ namespace Browser
               ListViewItem item;
               switch (fileInfo.Extension)
               {
-                        case ".exe": { item = new ListViewItem(fileInfo.Name, 1); break; }
+                        case ".exe": { item = new ListViewItem(fileInfo.Name, 2); break; }
                         case ".inf":
-                        case ".txt":
-                        case ".ini":
-                        case ".log":
-                        case ".xml":
+                        case ".txt": {item = new ListViewItem(fileInfo.Name, 70); break;}
+                        case ".ini": {item = new ListViewItem(fileInfo.Name, 69); break;}
+                        case ".bat":
+                        case ".cmd": {item = new ListViewItem(fileInfo.Name, 71); break;}
+                        case ".log": 
+                        case ".xml": 
                         case ".dat":
-                            { item = new ListViewItem(fileInfo.Name, 2); break; }
+                            {item = new ListViewItem(fileInfo.Name, 70); break;}
                         case ".bmp":
                         case ".jpg":
                         case ".png":
                         case ".gif":
                         case ".tiff":
-                            { item = new ListViewItem(fileInfo.Name, 4); break; }
-                        case ".dll":
+                            { item = new ListViewItem(fileInfo.Name, 325); break; }
+                        case ".avi":
+                        case ".mpeg":
+                        case ".mp4":
+                        case ".wmv":
+                            {item = new ListViewItem(fileInfo.Name, 315); break;}
+                        case ".mp3":
+                        case ".wav":
+                        case ".flac":
+                        case ".m4a":
+                             {item = new ListViewItem(fileInfo.Name, 314); break;}
+                        case ".dll":  { item = new ListViewItem(fileInfo.Name, 72); break; }
                         case ".sys":
-                            { item = new ListViewItem(fileInfo.Name, 3); break; }
+                            { item = new ListViewItem(fileInfo.Name, 72); break; }
                         default:
-                            { item = new ListViewItem(fileInfo.Name, 6); break; }     
+                            { item = new ListViewItem(fileInfo.Name, 0); break; }     
               }
               ContentList.Items.Add(item); 
         }
@@ -424,7 +439,10 @@ namespace Browser
             }
         }
 
-        private void button3_Click(object sender, EventArgs e) => this.Close();
+        private void Exit_Click(object sender, EventArgs e){
+            Data.FormContainers.mainContainer.CloseForm(this);
+            this.Close();
+        }
 
         private void ContentList_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
@@ -444,5 +462,15 @@ namespace Browser
         }
 
         private void ContentList_MouseDoubleClick(object sender, MouseEventArgs e) => MovingNextDirectory();
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Minimize_Click(object sender, EventArgs e)
+        {
+            Data.FormContainers.allOpenedForms.Add(this);    
+        }
     }
 }

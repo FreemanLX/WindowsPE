@@ -8,3 +8,7 @@
 #include <wingdi.h>
 #include <WinUser.h>
 #include <commdlg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <commdlg.h>
+#pragma warning(disable:4996)

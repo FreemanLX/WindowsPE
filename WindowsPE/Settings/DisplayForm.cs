@@ -1,78 +1,101 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Runtime.InteropServices;
+using System.Linq;
+using System.Windows.Forms;
 
-namespace Browser
+namespace WindowsPE.Settings
 {
     public partial class DisplayForm : UserControl
     {
-
-        public void UpdateDisplayForm()
+        public DisplayForm()
         {
             InitializeComponent();
-            string screenWidth = Screen.PrimaryScreen.Bounds.Width.ToString();
-            string screenHeight = Screen.PrimaryScreen.Bounds.Height.ToString();
-            comboBox1.Items.AddRange(Data.resolutions);
-            comboBox1.Text = screenWidth + "x" + screenHeight;
-            comboBox3.Text = Data.ToString(Data.fit);
-        }
-        public DisplayForm() => UpdateDisplayForm();
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-           
         }
 
-
-        private void display_Load(object sender, EventArgs e)
+        int GeneralDisplayIndex = 0;
+        Dictionary<int, Panel> displayIndexes;
+        Screen[] screens = null;
+        private void DisplayForm_Load(object sender, EventArgs e)
         {
-            pictureBox1.BackgroundImage = Data.form.BackgroundImage;
-            Refresh();
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
-        {
-             Data.fit = Data.ToFit((comboBox3.SelectedItem).ToString());
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-                OpenFileName openFileDialog = new OpenFileName();
-                openFileDialog.structSize = Marshal.SizeOf(openFileDialog);
-                openFileDialog.file = new string(new char[256]);
-                openFileDialog.maxFile = openFileDialog.file.Length;
-
-                openFileDialog.fileTitle = new String( new char[ 64 ]);
-                openFileDialog.maxFileTitle = openFileDialog.fileTitle.Length;    
-
-                openFileDialog.initialDir = Path.GetPathRoot(Environment.SystemDirectory);
-                openFileDialog.title = "Select background image";
-                openFileDialog.defExt = "txt";
-                if(ExternalMethods.GetOpenFileName(openFileDialog)) {   
-                      pictureBox1.BackgroundImage = new Bitmap(openFileDialog.file);
-                      Data.image = pictureBox1.BackgroundImage;
-                 }  
+            screens = Screen.AllScreens;
+            Panel[] panels = new Panel[screens.Length];
+            displayIndexes = new Dictionary<int, Panel>();
+            identifyBtn.BackColor = Data.color;
+            detectBtn.BackColor = Data.color;
+            int screensWidth = 0;
+            displaysFormContainers.ColumnStyles.Clear();
+            displaysFormContainers.RowStyles.Clear();
+            displaysFormContainers.RowCount = 3;
+            displaysFormContainers.ColumnCount = screens.Length + 2;
+            displaysFormContainers.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            displaysFormContainers.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            displaysFormContainers.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            int percentage = (screens.Length == 1) ? 35 : 25;
+            displaysFormContainers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, percentage)); //the left margin
+            for(int i = 0; i<screens.Length; i++)
+               displaysFormContainers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100 / screens.Length));
+            displaysFormContainers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, percentage)); //the right margin
             
+            for(int i = 0; i<screens.Length; i++)
+            {
+                panels[i] = new Panel
+                {
+                    Dock = DockStyle.Fill,
+                    BorderStyle = BorderStyle.FixedSingle
+                };
+                screensWidth += panels[i].Size.Width + 3;
+                Label displayId = new Label
+                {
+                    Font = new Font("Segoe UI", 50, FontStyle.Regular),
+                    Text = i.ToString(),
+                    ForeColor = Color.Black,
+                };
+                displayId.Size = new Size(Size.Width, 100);
+                displayId.Dock = DockStyle.Fill;
+                displayId.TextAlign = ContentAlignment.MiddleCenter;
+                displayId.MouseClick += new MouseEventHandler((MouseSender, MouseEvent) => GeneralDisplayScreenResolution(MouseSender, MouseEvent));
+                panels[i].Controls.Add(displayId);
+                if(screens[i] == Screen.PrimaryScreen)
+                {
+                    panels[i].BackColor = Data.color;
+                    GeneralDisplayIndex = i;
+                    displayId.ForeColor = Color.White;
+                    ResolutionComboBox.Text = screens[i].Bounds.Width.ToString() + " x " + screens[i].Bounds.Height.ToString();
+                    ResolutionComboBox.Items.AddRange(Data.resolutions[Data.DisplayIndex[i]]);
+                }
+                displayIndexes[i] = panels[i];
+                displaysFormContainers.Controls.Add(panels[i], i + 1, 1);
+            }
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void GeneralDisplayScreenResolution(object sender, MouseEventArgs e)
         {
-            string[] split = comboBox1.SelectedItem.ToString().Split('x');
-            try{
-                 Application.Exit();
-                 WindowsPE.Restart.Application(split[0] + " " + split[1] + " ");
-            }
-            catch(Exception exception)
-            {
-                MessageBox.Show(exception.Message);
-            }
+             ResolutionComboBox.Items.Clear();
+             Panel panel = null;
+             if(sender is Label)
+             {
+                panel = (sender as Label).Parent as Panel;
+             }
+             int DisplayIndex = displayIndexes.FirstOrDefault(x => x.Value == panel).Key;
+             displayIndexes[GeneralDisplayIndex].BackColor = Color.Transparent;
+             displayIndexes[GeneralDisplayIndex].Controls[0].ForeColor = Color.Black;
+             GeneralDisplayIndex = DisplayIndex;
+             displayIndexes[DisplayIndex].BackColor = Data.color;
+             ResolutionComboBox.Text = screens[DisplayIndex].Bounds.Width.ToString() + " x " + screens[DisplayIndex].Bounds.Height.ToString();
+             int index = Data.DisplayIndex[DisplayIndex];
+             displayIndexes[GeneralDisplayIndex].Controls[0].ForeColor = Color.White;
+             ResolutionComboBox.Items.AddRange(Data.resolutions[index]);
+        }
+
+        private void DisplayHeaderLayout_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void displaysFormContainers_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

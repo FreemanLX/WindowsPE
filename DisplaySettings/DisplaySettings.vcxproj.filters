@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="DisplaySettings">
+      <UniqueIdentifier>{8575037e-227e-4580-acb7-138b0210dc65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Firewall">
+      <UniqueIdentifier>{00c8a197-e198-428b-b14d-d4552617fd82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NativeClasses">
+      <UniqueIdentifier>{b5fb916e-282c-463c-8c51-e0a50d4a1c13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -21,6 +30,24 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DisplaySettings\DisplaySettingsUnsafe.h">
+      <Filter>DisplaySettings</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplaySettings\EnumScreenResolutionUnsafe.h">
+      <Filter>DisplaySettings</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeClasses\LinkedListUnsafe\LinkedListUnsafe.h">
+      <Filter>NativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeClasses\LinkedListUnsafe\pairUnsafe.h">
+      <Filter>NativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeClasses\StringUnsafe\stringUnsafe.h">
+      <Filter>NativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Firewall\firewall.h">
+      <Filter>Firewall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -28,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NativeClasses\StringUnsafe\stringUnsafe.cpp">
+      <Filter>NativeClasses</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -14,6 +14,7 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,21 +27,22 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>none</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <Prefer32Bit>true</Prefer32Bit>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,17 +55,18 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>false</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>none</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>..\bin\</OutputPath>
@@ -74,62 +77,173 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>0</WarningLevel>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SimpleWifi">
-      <HintPath>..\..\..\..\Desktop\SimpleWifi.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Net" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdaptiveMethods.cs" />
-    <Compile Include="ExternalMethods.cs" />
-    <Compile Include="LabelMJS.cs">
+    <Compile Include="Algorithms\AdaptiveMethods.cs" />
+    <Compile Include="CustomFormFolder\CustomForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomFormFolder\CustomForm.Designer.cs">
+      <DependentUpon>CustomForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomFormFolder\ControlButtons.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MainContainer\ApplicationStartIcon.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainContainer\ApplicationStartIcon.Designer.cs">
+      <DependentUpon>ApplicationStartIcon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\DisplayForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\DisplayForm.Designer.cs">
+      <DependentUpon>DisplayForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\FilesharingForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\FilesharingForm.Designer.cs">
+      <DependentUpon>FilesharingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\FirewallForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\FirewallForm.Designer.cs">
+      <DependentUpon>FirewallForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\ShareWizard\NewShareForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\ShareWizard\NewShareForm.Designer.cs">
+      <DependentUpon>NewShareForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\ShareWizard\ShareData.cs" />
+    <Compile Include="Settings\ShareWizard\ShareWizard_Confirmation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\ShareWizard\ShareWizard_Confirmation.Designer.cs">
+      <DependentUpon>ShareWizard_Confirmation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\ShareWizard\ShareWizard_Location.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\ShareWizard\ShareWizard_Location.Designer.cs">
+      <DependentUpon>ShareWizard_Location.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\ShareWizard\ShareWizard_Name.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\ShareWizard\ShareWizard_Name.Designer.cs">
+      <DependentUpon>ShareWizard_Name.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\ShareWizard\ShareWizard_Permissions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\ShareWizard\ShareWizard_Permissions.Designer.cs">
+      <DependentUpon>ShareWizard_Permissions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Startmenu\ApplicationLetter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Startmenu\ApplicationLetter.Designer.cs">
+      <DependentUpon>ApplicationLetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Startmenu\ApplicationStartIcon.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Startmenu\ApplicationStartIcon.Designer.cs">
+      <DependentUpon>ApplicationStartIcon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Data.FormContainers.cs" />
+    <Compile Include="Algorithms\ExternalMethods.cs" />
     <Compile Include="LoadingScreen.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LoadingScreen.Designer.cs">
       <DependentUpon>LoadingScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="Metro.cs">
-      <SubType>UserControl</SubType>
+    <Compile Include="MainContainer\MainContainer.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Metro.Designer.cs">
-      <DependentUpon>Metro.cs</DependentUpon>
+    <Compile Include="MainContainer\MainContainer.Designer.cs">
+      <DependentUpon>MainContainer.cs</DependentUpon>
     </Compile>
-    <Compile Include="OpenFileName.cs" />
-    <Compile Include="Restart.cs" />
+    <Compile Include="Data\Data.Network.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Algorithms\QuickSort.cs" />
     <Compile Include="Settings\AboutForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Settings\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Settings\ColorsForm.cs">
+    <Compile Include="Settings\LoadingSettingsUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Settings\ColorsForm.Designer.cs">
-      <DependentUpon>ColorsForm.cs</DependentUpon>
+    <Compile Include="Settings\LoadingSettingsUserControl.Designer.cs">
+      <DependentUpon>LoadingSettingsUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Wifi\WifiConnection.cs">
+    <Compile Include="Settings\Networking\ChangeNetworkingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Settings\Wifi\WifiConnection.Designer.cs">
-      <DependentUpon>WifiConnection.cs</DependentUpon>
+    <Compile Include="Settings\Networking\ChangeNetworkingForm.Designer.cs">
+      <DependentUpon>ChangeNetworkingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Data.cs" />
-    <Compile Include="Settings\DisplayForm.cs">
+    <Compile Include="Settings\Networking\IPAddressExtensions.cs" />
+    <Compile Include="Settings\Networking\IPListCheck.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Settings\DisplayForm.Designer.cs">
-      <DependentUpon>DisplayForm.cs</DependentUpon>
+    <Compile Include="Settings\Networking\IPListCheck.Designer.cs">
+      <DependentUpon>IPListCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Networking\Network profile.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\Networking\Network profile.Designer.cs">
+      <DependentUpon>Network profile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Networking\SetupNetworkInterface.cs" />
+    <Compile Include="Data\Data.cs" />
+    <Compile Include="Settings\PersonalizationForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings\PersonalizationForm.Designer.cs">
+      <DependentUpon>PersonalizationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="File Explorer\File explorer.cs">
       <SubType>Form</SubType>
@@ -137,23 +251,11 @@
     <Compile Include="File Explorer\File explorer.Designer.cs">
       <DependentUpon>File explorer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Main.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\NetworkForm.cs">
+    <Compile Include="Settings\Networking\NetworkForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Settings\NetworkForm.Designer.cs">
+    <Compile Include="Settings\Networking\NetworkForm.Designer.cs">
       <DependentUpon>NetworkForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\Wifi\WifiPassword.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Settings\Wifi\WifiPassword.Designer.cs">
-      <DependentUpon>WifiPassword.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -163,49 +265,103 @@
     <Compile Include="Settings\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Startmenu\CustomPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Startmenu\Search.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Startmenu\Search.Designer.cs">
+      <DependentUpon>Search.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Startmenu\Startmenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Startmenu\Startmenu.Designer.cs">
+      <DependentUpon>Startmenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="ThreadException.cs" />
-    <EmbeddedResource Include="LoadingScreen.resx">
-      <DependentUpon>LoadingScreen.cs</DependentUpon>
+    <Compile Include="XML\UpdateXML.cs" />
+    <Compile Include="XML\XMLSettings.cs" />
+    <EmbeddedResource Include="CustomFormFolder\CustomForm.resx">
+      <DependentUpon>CustomForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Metro.resx">
-      <DependentUpon>Metro.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Settings\AboutForm.resx">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Settings\ColorsForm.resx">
-      <DependentUpon>ColorsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Settings\Wifi\WifiConnection.resx">
-      <DependentUpon>WifiConnection.cs</DependentUpon>
+    <EmbeddedResource Include="MainContainer\ApplicationStartIcon.resx">
+      <DependentUpon>ApplicationStartIcon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\DisplayForm.resx">
       <DependentUpon>DisplayForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Settings\FilesharingForm.resx">
+      <DependentUpon>FilesharingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\FirewallForm.resx">
+      <DependentUpon>FirewallForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\ShareWizard\NewShareForm.resx">
+      <DependentUpon>NewShareForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\ShareWizard\ShareWizard_Confirmation.resx">
+      <DependentUpon>ShareWizard_Confirmation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\ShareWizard\ShareWizard_Location.resx">
+      <DependentUpon>ShareWizard_Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\ShareWizard\ShareWizard_Name.resx">
+      <DependentUpon>ShareWizard_Name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\ShareWizard\ShareWizard_Permissions.resx">
+      <DependentUpon>ShareWizard_Permissions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Startmenu\ApplicationLetter.resx">
+      <DependentUpon>ApplicationLetter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Startmenu\ApplicationStartIcon.resx">
+      <DependentUpon>ApplicationStartIcon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadingScreen.resx">
+      <DependentUpon>LoadingScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainContainer\MainContainer.resx">
+      <DependentUpon>MainContainer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\LoadingSettingsUserControl.resx">
+      <DependentUpon>LoadingSettingsUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\Networking\ChangeNetworkingForm.resx">
+      <DependentUpon>ChangeNetworkingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\Networking\IPListCheck.resx">
+      <DependentUpon>IPListCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\Networking\Network profile.resx">
+      <DependentUpon>Network profile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\PersonalizationForm.resx">
+      <DependentUpon>PersonalizationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="File Explorer\File explorer.resx">
       <DependentUpon>File explorer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Settings\NetworkForm.resx">
+    <EmbeddedResource Include="Settings\Networking\NetworkForm.resx">
       <DependentUpon>NetworkForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Settings\Wifi\WifiPassword.resx">
-      <DependentUpon>WifiPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Settings\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Startmenu\Search.resx">
+      <DependentUpon>Search.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Startmenu\Startmenu.resx">
+      <DependentUpon>Startmenu.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
@@ -219,13 +375,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Windows8 loader.gif" />
+    <None Include="Resources\301 %281%29.gif" />
+    <None Include="Resources\294 %286%29.gif" />
+    <None Include="Resources\294 %287%29.gif" />
     <Content Include="Settings\Settings.xml">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>

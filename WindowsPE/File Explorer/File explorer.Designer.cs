@@ -1,4 +1,4 @@
-﻿namespace Browser
+﻿namespace WindowsPE
 {
     partial class File_explorer
     {
@@ -28,9 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(File_explorer));
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.ContentList = new System.Windows.Forms.ListView();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -47,20 +45,6 @@
             this.BoxBar.SuspendLayout();
             this.SuspendLayout();
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "shell32_4.ico");
-            this.imageList1.Images.SetKeyName(1, "icons8-exe-40.png");
-            this.imageList1.Images.SetKeyName(2, "imageres_102.ico");
-            this.imageList1.Images.SetKeyName(3, "shell32_154.ico");
-            this.imageList1.Images.SetKeyName(4, "shell32_63008.ico");
-            this.imageList1.Images.SetKeyName(5, "shell32_2.ico");
-            this.imageList1.Images.SetKeyName(6, "shell32_1_1.ico");
-            this.imageList1.Images.SetKeyName(7, "imageres_131.ico");
-            this.imageList1.Images.SetKeyName(8, "imageres_133.ico");
-            // 
             // ContentList
             // 
             this.ContentList.AllowColumnReorder = true;
@@ -70,13 +54,11 @@
             this.ContentList.FullRowSelect = true;
             this.ContentList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.ContentList.HideSelection = false;
-            this.ContentList.LargeImageList = this.imageList1;
             this.ContentList.Location = new System.Drawing.Point(3, 73);
             this.ContentList.MultiSelect = false;
             this.ContentList.Name = "ContentList";
             this.ContentList.OwnerDraw = true;
             this.ContentList.Size = new System.Drawing.Size(1002, 653);
-            this.ContentList.SmallImageList = this.imageList1;
             this.ContentList.TabIndex = 1;
             this.ContentList.UseCompatibleStateImageBehavior = false;
             this.ContentList.View = System.Windows.Forms.View.Details;
@@ -107,6 +89,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1008, 729);
             this.tableLayoutPanel2.TabIndex = 2;
+            this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
             // tableLayoutPanel1
             // 
@@ -223,6 +206,7 @@
             this.button4.Size = new System.Drawing.Size(34, 18);
             this.button4.TabIndex = 3;
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.Minimize_Click);
             // 
             // button3
             // 
@@ -236,7 +220,7 @@
             this.button3.Size = new System.Drawing.Size(34, 18);
             this.button3.TabIndex = 4;
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.Exit_Click);
             // 
             // File_explorer
             // 
@@ -261,12 +245,12 @@
 
         #endregion
 
-        private System.Windows.Forms.ImageList imageList1;
+
         private System.Windows.Forms.ListView ContentList;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox Location;
+        private new System.Windows.Forms.TextBox Location;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox SearchBar;
         private System.Windows.Forms.TableLayoutPanel BoxBar;

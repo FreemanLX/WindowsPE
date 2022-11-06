@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Browser.Properties {
+namespace WindowsPE.Properties {
     using System;
     
     
@@ -57,6 +57,46 @@ namespace Browser.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _294__6_ {
+            get {
+                object obj = ResourceManager.GetObject("294 (6)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _294__7_ {
+            get {
+                object obj = ResourceManager.GetObject("294 (7)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap loadingBar {
+            get {
+                object obj = ResourceManager.GetObject("loadingBar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap loadingCircle {
+            get {
+                object obj = ResourceManager.GetObject("loadingCircle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

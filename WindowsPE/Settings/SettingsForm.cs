@@ -2,24 +2,15 @@
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
+using WindowsPE.Settings;
 
-namespace Browser
+namespace WindowsPE
 {
-
     public partial class SettingsForm : Form
     {
-       
         public SettingsForm()
         {
             InitializeComponent();
-        }
-
-        public void UserControlTheme(Control control)
-        {
-            foreach(Control subcontrol in control.Controls)
-            {
-                if(subcontrol is Button) subcontrol.BackColor = Data.color;
-            }
         }
 
         public void Theme(Control control)
@@ -29,7 +20,6 @@ namespace Browser
                 foreach(Control subcontrol in control.Controls)
                 {
                     if(!(subcontrol is UserControl)) Theme(subcontrol);
-                    else UserControlTheme(subcontrol);
                 }
             }));
         }
@@ -55,11 +45,13 @@ namespace Browser
            base.OnClosing(e);
         }
 
-        System.Threading.Thread themethread;
-        private void Settings_Load(object sender, EventArgs e) {
+        Thread themethread;
+        private void Settings_Load(object sender, EventArgs e) 
+        {
             FormBorderStyle = FormBorderStyle.None;
-            WindowState = FormWindowState.Maximized;
-            ChangePanel(new DisplayForm());
+            Focus();
+            Show();
+            ChangePanel(new PersonalizationForm());
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e) {
@@ -68,25 +60,11 @@ namespace Browser
         }
 
         private void NetworkClick(object sender, EventArgs e) => ChangePanel(new NetworkForm());
-
-        private void AboutClick(object sender, EventArgs e) => ChangePanel(new ColorsForm());
-
         private void DisplayClick(object sender, EventArgs e) => ChangePanel(new DisplayForm());
 
         private void SettingsPanel_Paint(object sender, PaintEventArgs e)
         {
 
-        }
-
-        private void DefaultButtons()
-        {
-            foreach(Control control in GeneralSettingsPanel.Controls){
-                if(control is Button){
-                    control.TabStop = false;
-                    //  control.FlatStyle = FlatStyle.Flat;
-                    //control.FlatAppearance.BorderSize = 0;
-                }
-            }
         }
 
         private void button4_Click(object sender, EventArgs e) => ChangePanel(new AboutForm());
@@ -104,7 +82,22 @@ namespace Browser
 
         private void ExitClick(object sender, EventArgs e)
         {
+            Data.FormContainers.mainContainer.CloseForm(this);
             this.Close();
+        }
+
+        private void Minimize_Click(object sender, EventArgs e)
+        {
+             this.Hide();
+        }
+
+        private void personalizationBtn_Click(object sender, EventArgs e) => ChangePanel(new PersonalizationForm());
+
+        private void button2_Click(object sender, EventArgs e) => ChangePanel(new FilesharingForm());
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ChangePanel(new FirewallForm());
         }
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Browser.Properties {
+namespace WindowsPE.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

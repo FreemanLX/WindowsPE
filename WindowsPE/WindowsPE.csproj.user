@@ -14,4 +14,12 @@
     <StartWorkingDirectory>C:\Users\Andreas\Documents\GitHub\WindowsPE\bin\</StartWorkingDirectory>
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+    <StartWorkingDirectory>E:\WindowsPE_Projects\bin\</StartWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <StartWorkingDirectory>E:\WindowsPE_Projects\bin\</StartWorkingDirectory>
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+  </PropertyGroup>
 </Project>

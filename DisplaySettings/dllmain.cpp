@@ -1,299 +1,155 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
+#include "DisplaySettings/EnumScreenResolutionUnsafe.h"
+#include "DisplaySettings/DisplaySettingsUnsafe.h"
+#include <combaseapi.h>
+#include <LM.h>
+#include "NativeClasses/LinkedListUnsafe/pairUnsafe.h"
+#include "Firewall/firewall.h"
+
 #define DllExport   __declspec( dllexport )
-#include <stdio.h>
-#include <stdlib.h>
 #pragma warning(disable:4996)
+#pragma comment(lib, "Netapi32.lib")
+#pragma comment(lib, "Advapi32.lib")
 
 
-class string{
-    char* chararray;
-	char* append(char* array, char element, int n){
-        char* aux = new char[n + 1];
-       
-	    for (; array != array + n; (void)++array, (void)++aux) {
-                *aux = *array;
-        }
-
-        aux[n] = element;
-        return aux;
-      }
-   public:
-	   string(){
-	       chararray = new char[1024];
-	   }
-	   string(char* costantchar){
-		   chararray = new char[1024];
-	       strcpy(chararray, costantchar);
-	   }
-	   size_t Size(){
-	      return strlen(chararray);
-	   }
-	   size_t Length(){
-	      return strlen(chararray);
-	   }
-	   void clear(){
-	      delete chararray;
-	   }
-	   bool empty(){
-	      return strlen(chararray) == 0;
-	   }
-	   char operator[](int index){
-	      return chararray[index];
-	   }
-	   string operator+=(string& obj){
-	        return strcat(this->chararray, obj.chararray);
-	   }
-	   string operator+=(const char* str){
-	        return strcat(this->chararray, str);
-	   }
-	   char* toCharArray(){
-	      return chararray;
-	   }
-};
-
-
-inline bool operator==(string obj1, string obj2){
-	 return strcmp(obj1.toCharArray(), obj2.toCharArray()) == 0;
+const wchar_t *getWchar(const char* data){
+   const size_t size = strlen(data) + 1;
+   wchar_t* wchar = new wchar_t[size];
+   mbstowcs(wchar, data, size);
+   return wchar;
 }
 
-
-template <class T>
-class Node{
-private:
-    T data;
-	Node<T>* next;
-
-public:
-	Node(){
-	   data = 1;
-	   next = NULL;
-	}
-	Node(T data){
-	   this->data = data;
-	   next = NULL;
-	}
-
-	T GetData(){
-	   return data;
-	}
-
-	Node<T>* getNext(){
-	   return next;
-	}
-
-	void setNext(Node<T>* node){
-	   next = node;
-	}
-};
-
-
-template <class T>
-class LinkedList
-{
-	Node<T>* elements;
-	int elemcount;
-
-public:
-	LinkedList(){
-	   elements = NULL;
-	}
-
-	Node<T>* GetElements(){
-	    return elements; 
-	}
-
-
-	void push_back(T element){
-        if (elements == NULL) elements = new Node<T>(element);
-		else
-		{
-			Node<T>* last = elements; 
-			while (last->getNext() != nullptr)
-			{
-				last = last->getNext();
-			}
-			last->setNext(new Node<T>(element));
-		}
-	    elemcount++;
-	}
-
-	int Size(){
-	    return elemcount;
-	}
-
-	T* ToArray(){
-        T* array = new T[elemcount];
-		int i = 0;
-		Node<T>* node = elements;
-		while(node != NULL){
-			array[i++] = node->GetData();
-			node = node->getNext();
-		}
-		return array;
-    }
-
-};
-
-
-
-
-class EnumAvailableScreenResolution{
-   LinkedList<string>* AvailableScreenResolution;
-
-public:
-	EnumAvailableScreenResolution()
-	{
-	     AvailableScreenResolution = new LinkedList<string>();
-		 DEVMODE devmode;
-		 memset(&devmode, 0, sizeof(DEVMODE));
-	     devmode.dmSize = sizeof(DEVMODE);
-         int i = 0;
-         while (EnumDisplaySettings(NULL, i++, &devmode) != 0)
-		 {
-			  if(devmode.dmPelsHeight * devmode.dmPelsWidth >= 1024*768 ){
-				  char message[24];
-				  sprintf_s(message, "%dx%d\n", devmode.dmPelsWidth, devmode.dmPelsHeight);
-				  AvailableScreenResolution->push_back(string(message));
-			  }
-         }
-	}
-
-	auto GetArray(){
-		return AvailableScreenResolution->ToArray();
-	}
-
-	int Size(){
-	   return AvailableScreenResolution->Size();
-	}
-};
-
-
-class DisplayExceptions{
-    private:
-	int errorcode_;
-    public:
-		DisplayExceptions(int errorcode) : errorcode_(errorcode){}
-		DisplayExceptions(const DisplayExceptions& obj){
-			this->errorcode_ = obj.errorcode_;
-		}
-
-		int GetErrorCode(){
-		   return errorcode_;
-		}
-
-		char* GetMessageCode(){
-			switch (errorcode_)
-			{
-				case DISP_CHANGE_BADFLAGS:
-					case DISP_CHANGE_BADMODE:
-						return (char*)&("An error has occured while trying to change screen resolution.\nPlease Technical Support.") ;
-					case DISP_CHANGE_FAILED:
-						(char*)&("The required resolution of %d x %d is not supported.\nPlease contact your Systems Hardware Vendor.") ;
-					case DISP_CHANGE_SUCCESSFUL:
-						(char*)&("%s requires this video mode to operate.\nYour normal view will be returned on exit.", "MyApp") ;
-					default:
-						return (char*)&("Success!");
-			}
-		    	    
-		}
-};
-
-
-
-
-class DisplaySettings{
-    int height;
-	int width;
-	int rate;
-	int color;
-
-	void DisplaySettingsMethod(int heightParm, int widthParm, int resolutionRate, int displayColor){
-			     this->height = heightParm;
-		         this->width = widthParm;
-				 this->color = displayColor;
-				 this->rate = resolutionRate;
-	}
-
-    public:
-
-		//DisplaySettings
-		//height the height of the resolution
-		//width the width of the resolution
-		DisplaySettings(int heightParm, int widthParm){
-			DisplaySettingsMethod(heightParm, widthParm, 60, 32);
-		}
-		DisplaySettings(int heightParm, int widthParm, int resolutionRate){
-		    DisplaySettingsMethod(heightParm, widthParm, resolutionRate, 32);
-		}
-
-		DisplaySettings(int heightParm, int widthParm, int resolutionRate, int displayColor){
-		    DisplaySettingsMethod(heightParm, widthParm, resolutionRate, displayColor);
-		}
-
-		char* Set(){
-			long error = 0;
-			DEVMODE devmode;
-			memset(&devmode, 0, sizeof(DEVMODE));
-			devmode.dmSize = sizeof(DEVMODE);
-			devmode.dmDriverExtra = *((unsigned short*) GlobalAlloc(GHND, sizeof(DEVNAMES)));
-			if (EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &devmode))
-			{
-				devmode.dmPelsHeight = height;
-				devmode.dmPelsWidth = width;
-				devmode.dmDisplayFrequency = rate;
-				devmode.dmColor = color;
-				devmode.dmFields = DM_PELSHEIGHT | DM_PELSWIDTH;
-				error = ChangeDisplaySettings(&devmode, CDS_FULLSCREEN);
-			}
-			GlobalFree((void*) devmode.dmDriverExtra) ;
-			DisplayExceptions exception(error);
-			return exception.GetMessageCode();
-		}
-
-};
-
-
-struct Resolution{
-    int height;
-    int width;
-    LPCSTR output;
-};
-
-extern "C" {
-	void DllExport ChangeScreenResolution(Resolution* resolution){
-		  DisplaySettings* displaySettings = new DisplaySettings(resolution->height, resolution->width);
-		  resolution->output = displaySettings->Set();
-	}
-}
-
-//FROM C++ to C (external functions) => import function in C#
 extern "C"{
-    void DllExport ChangeScreenResolutionW(int height, int width, char* output){
-		  DisplaySettings* displaySettings = new DisplaySettings(height, width);
-		  output = displaySettings->Set();
+
+	 int DllExport GetFirewallData(firewallData** data, int* size, int* memsize){
+	      firewall* firewallObj = new firewall();
+		  if(!firewallObj->Initialize()) return -1;
+		  if(!firewallObj->GettingFirewallSetting()) return -1;
+		  *data = firewallObj->getFirewallEnum();
+		  *size = firewallObj->Length();
+		  *memsize = firewallObj->MemSize();
+		  delete firewallObj;
+		  if(sizeof(*data) > 0) return 1;
+		  return 0;
+	 }
+
+	 void DllExport GetFileSharing(char** &netname, char** &path, int &size){
+		 PSHARE_INFO_502 BufPtr, pointer;
+		 NET_API_STATUS netapistatus;
+		 DWORD entries = 0;
+		 DWORD totalentries = 0;
+		 DWORD resume_handle = 0;
+		 LinkedList_unsafe<pair_unsafe<string_unsafe, string_unsafe> > data;
+	     do
+		 {   
+			 netapistatus = NetShareEnum(NULL, 502, (LPBYTE*) &BufPtr, MAX_PREFERRED_LENGTH, &entries, &totalentries, &resume_handle);
+		     if(netapistatus  == ERROR_SUCCESS || netapistatus == ERROR_MORE_DATA){
+		          pointer = BufPtr;
+				  for(unsigned int i = 0; i<entries; i++){
+					 string_unsafe netname(pointer->shi502_netname);
+					 string_unsafe netpath(pointer->shi502_path);
+					 pair_unsafe<string_unsafe, string_unsafe> net(netname, netpath);
+				     data.push_back(net);
+					 pointer++;
+				  }
+			 }	 
+		 }
+		 while(netapistatus == ERROR_MORE_DATA);
+		 pair_unsafe<string_unsafe, string_unsafe>* arrayofPairs = data.ToArray();
+		 netname = (char**)CoTaskMemAlloc(data.byteSize());
+		 path = (char**)CoTaskMemAlloc(data.byteSize());
+		 size = data.Size();
+		 for(int i = 0; i<data.Size(); i++){
+			 char* array = arrayofPairs[i].first.toCharArray();
+			 netname[i] = (char*)CoTaskMemAlloc(strlen(array) + 1);
+			 strcpy(netname[i], array);
+		     netname[i][strlen(array) + 1] = '\0';
+		     //netname[i] = arrayofPairs[i].first.toCharArray();
+			 array = arrayofPairs[i].second.toCharArray();
+			 path[i] = (char*)CoTaskMemAlloc(strlen(array) + 1);
+			 strcpy(path[i], array);
+		     path[i][strlen(array) + 1] = '\0';
+			// path[i] = arrayofPairs[i].second.toCharArray();
+		 }
+	 }
+
+
+	 bool DllExport DeleteFileSharing(char* netname){
+		DWORD reversed = 0;
+	    NET_API_STATUS netapistatus = NetShareDel(NULL, (LPWSTR)getWchar(netname), reversed);
+		return (netapistatus == ERROR_SUCCESS);
+	 }
+	 
+	 bool DllExport AddFileSharing(SHARE_INFO_2 shareinfo){
+		 DWORD error = 0;
+		 NET_API_STATUS netapistatus = NetShareAdd(NULL, 2, (LPBYTE)&shareinfo, &error);
+	     return (netapistatus == ERROR_SUCCESS);
+	 }
+
+	 void DllExport OpenFileDialog(char** path){
+		        OPENFILENAMEA OpenDialog = {0};
+				char fileName[MAX_PATH] = "";
+				OpenDialog.lStructSize = sizeof(OpenDialog);
+				OpenDialog.hwndOwner = NULL;
+				OpenDialog.lpstrFilter = "All Files (*.*)\0*.*\0";
+				OpenDialog.lpstrFile = fileName;
+				OpenDialog.nMaxFile = MAX_PATH;
+				OpenDialog.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+			    OpenDialog.lpstrDefExt = "";
+				if (GetOpenFileNameA(&OpenDialog)){ ///atribuie adresa
+					 *path = (char*) CoTaskMemAlloc(strlen(fileName) * sizeof(char) + 1);
+					 strcpy(*path, fileName);
+				}
+	 }
+
+    int DllExport ChangeScreenResolutionU(int height, int width){
+		  DisplaySettings_unsafe displaySettings(height, width);
+		  return displaySettings.Set();
 	}
 
-	bool DllExport EnumScreenResolution(char*** Poutput, int* Psize){
-	    EnumAvailableScreenResolution screenResolutions;
-		int size = screenResolutions.Size();
-		*Psize = size;
-		char** output = new char*[size];
-		//char** output = (char**) malloc(sizeof(char) * (size));
+	bool DllExport GetAvailableScreenResolutionIndex(int* &output, int &size){
+	    DISPLAY_DEVICE display_device = {0};
+		display_device.cb = sizeof(DISPLAY_DEVICE);
+		int i = 0;
+		LinkedList_unsafe<int> indexNoList;
+		while(EnumDisplayDevices(NULL, i, &display_device, EDD_GET_DEVICE_INTERFACE_NAME)){
+		   	   DEVMODE devmode = {0};
+	           devmode.dmSize = sizeof(DEVMODE);
+               if (EnumDisplaySettings(display_device.DeviceName, 0, &devmode) != 0){
+				     indexNoList.push_back(i);
+			   }
+			   i++;
+		}
+		output = indexNoList.ToArray();
+		size = indexNoList.Size();
+		return true;
+	}
+
+	bool DllExport EnumScreenResolutionU(int display, char** &output, int &size){
+		string_unsafe* outputinStrings = nullptr;
+	    EnumScreenResolutionUnsafe screenResolutions(display);
+		size = screenResolutions.Size();
+		int byteSize = screenResolutions.byteSize();
 		if(size > 0){
-		   string* outputinStrings = screenResolutions.GetArray();
+		   outputinStrings = screenResolutions.GetArray();
+		   output = (char**)CoTaskMemAlloc(byteSize);
 		   for(int i = 0; i<size; i++){ 
 			    char* array = outputinStrings[i].toCharArray();
-			    //output[i] = (char*) malloc(sizeof(char) * strlen(array));
-				output[i] = new char[strlen(array)];
-				strcpy(output[i], array);
-				delete array;
+			    output[i] = (char*)CoTaskMemAlloc(strlen(array) + 1);
+			    strcpy(output[i], array);
+				output[i][strlen(array) + 1] = '\0';
 		   }
-		   *Poutput = output;
+		   delete[] outputinStrings;
 		   return true;
 		}
 		return false;
+	
 	}
+
+//	bool DllExport EnumScreenResolutionU(char** &output, int& size){
+//		return EnumScreenResolutionU(0, output, size);
+//	}
 }
 
 BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)

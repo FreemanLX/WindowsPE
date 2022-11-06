@@ -28,59 +28,44 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.LoadingLabel = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoadingScreen));
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // pictureBox1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(72, 68);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(213, 25);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Windows PE Version 1.0";
-            // 
-            // LoadingLabel
-            // 
-            this.LoadingLabel.AutoSize = true;
-            this.LoadingLabel.Font = new System.Drawing.Font("Segoe UI Semilight", 12F);
-            this.LoadingLabel.ForeColor = System.Drawing.Color.White;
-            this.LoadingLabel.Location = new System.Drawing.Point(12, 153);
-            this.LoadingLabel.Name = "LoadingLabel";
-            this.LoadingLabel.Size = new System.Drawing.Size(73, 21);
-            this.LoadingLabel.TabIndex = 1;
-            this.LoadingLabel.Text = "Loading: ";
+            this.pictureBox1.BackColor = System.Drawing.Color.White;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(1008, 729);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
             // 
             // LoadingScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkViolet;
-            this.ClientSize = new System.Drawing.Size(371, 183);
+            this.ClientSize = new System.Drawing.Size(1008, 729);
             this.ControlBox = false;
-            this.Controls.Add(this.LoadingLabel);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.pictureBox1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LoadingScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Windows PE";
             this.Load += new System.EventHandler(this.LoadingScreen_Load);
-            this.Shown += new System.EventHandler(this.LoadingScreen_Shown);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label LoadingLabel;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
