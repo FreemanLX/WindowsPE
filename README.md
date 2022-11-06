@@ -95,4 +95,6 @@ Below you will see some screenshots
 ![image](https://user-images.githubusercontent.com/56113049/200154930-55546655-3eed-4ff6-aa2e-0eb48c74b14d.png)
 
 **What's next**
+
+
 Well when I have my free time, I still need to add functionalities on Firewall (add / modify / delete rules) right now we can only view, fix bugs with SMB Share regarding the partition part, completing the functionality of the multiple process parts (replace ctrl + alt), completing the functionality of the file explorer and add the file copy GUI like on Windows. 
