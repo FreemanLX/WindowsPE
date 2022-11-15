@@ -1,5 +1,5 @@
 # Minimalistic Shell for Windows PE
-# Version 0.2_alpha
+# Version 0.2.1_alpha
 Making scripts and packages to build Windows PE (bat and C#) (it will be integrated on IntegrateOS later)\
 
 Hardware requirements:
