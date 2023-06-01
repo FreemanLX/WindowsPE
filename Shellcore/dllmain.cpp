@@ -1,9 +1,13 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
-#include "pch.h"
+#include <windows.h>
+#include <wingdi.h>
+#include <WinUser.h>
+#include <commdlg.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "DisplaySettings/EnumScreenResolutionUnsafe.h"
 #include "DisplaySettings/DisplaySettingsUnsafe.h"
-#include <combaseapi.h>
-#include <LM.h>
 #include "NativeClasses/LinkedListUnsafe/pairUnsafe.h"
 #include "Firewall/firewall.h"
 
@@ -11,6 +15,8 @@
 #pragma warning(disable:4996)
 #pragma comment(lib, "Netapi32.lib")
 #pragma comment(lib, "Advapi32.lib")
+#include <LM.h>
+#include <combaseapi.h>
 
 
 const wchar_t *getWchar(const char* data){
@@ -20,26 +26,81 @@ const wchar_t *getWchar(const char* data){
    return wchar;
 }
 
-extern "C"{
-
-	 int DllExport GetFirewallData(firewallData** data, int* size, int* memsize){
-	      firewall* firewallObj = new firewall();
-		  if(!firewallObj->Initialize()) return -1;
-		  if(!firewallObj->GettingFirewallSetting()) return -1;
-		  *data = firewallObj->getFirewallEnum();
-		  *size = firewallObj->Length();
-		  *memsize = firewallObj->MemSize();
-		  delete firewallObj;
-		  if(sizeof(*data) > 0) return 1;
-		  return 0;
+extern "C"
+{
+	 //Firewall
+	 bool DllExport FirewallDataClear(firewallData* data, int size){
+	     delete[] data;
+		 data = nullptr;
+		 return true;
 	 }
 
+	 int DllExport GetFirewallData(firewallData** data, int* size){
+	      firewall* firewallObj = new firewall();
+ 		  if(!firewallObj->Initialize()) return -1; //in case when unable to initalize
+		  if(!firewallObj->GettingFirewallSetting()) { //in case when unable to return the data
+ 		      delete firewallObj;
+			  return -2; //unable to return the data
+		  }
+		  *data = firewallObj->getFirewallEnum();
+		  *size = firewallObj->Length();
+		  delete firewallObj;
+		  return size > 0; //errors 1 and 2 means it completes with succes, but when on 0, it means no firewall entries
+	 }
+
+	 bool DllExport AddFirewallRule(firewallData* rule)
+	 {
+	     firewall* firewallObj = new firewall();
+		 if(!firewallObj->Initialize()) return false; //in case when unable to initalize
+		 bool status = firewallObj->addFirewallEntry(*rule);
+		 delete firewallObj;
+		 return status;
+	 }
+
+	 bool DllExport DeleteFirewallRule(char* ruleName)
+	 {
+	     firewall* firewallObj = new firewall();
+		 if(!firewallObj->Initialize()) return false; //in case when unable to initalize
+		 bool status = firewallObj->deleteFirewallEntry(ruleName);
+		 delete firewallObj;
+		 return status;
+	 }
+
+
+	 bool DllExport EnableFirewall(NET_FW_PROFILE_TYPE2 firewallType)
+	 { 
+		 firewall* firewallObj = new firewall();
+		 if(!firewallObj->Initialize()) return false;
+		 bool status = firewallObj->EnableFirewall(firewallType);
+		 delete firewallObj;
+		 return status;
+	 }
+
+	 bool DllExport DisableFirewall(NET_FW_PROFILE_TYPE2 firewallType)
+	 {
+		 
+	     firewall* firewallObj = new firewall();
+		 if(!firewallObj->Initialize()) return false;
+		 bool status = firewallObj->DisableFirewall(firewallType);
+		 delete firewallObj;
+		 return status;
+	 }
+
+	 int DllExport CheckFirewall(NET_FW_PROFILE_TYPE2 profile)
+	 {
+	      firewall* firewallObj = new firewall();
+ 		  if(!firewallObj->Initialize()) return -1; //in case when unable to initalize
+		  
+		  bool status = firewallObj->CheckIfFirewallIsEnabled(profile);
+		  delete firewallObj;
+		  return status;
+	 }
+
+	 //File sharing part of the code
 	 void DllExport GetFileSharing(char** &netname, char** &path, int &size){
 		 PSHARE_INFO_502 BufPtr, pointer;
 		 NET_API_STATUS netapistatus;
-		 DWORD entries = 0;
-		 DWORD totalentries = 0;
-		 DWORD resume_handle = 0;
+		 DWORD entries = 0, totalentries = 0, resume_handle = 0;
 		 LinkedList_unsafe<pair_unsafe<string_unsafe, string_unsafe> > data;
 	     do
 		 {   
@@ -60,18 +121,17 @@ extern "C"{
 		 netname = (char**)CoTaskMemAlloc(data.byteSize());
 		 path = (char**)CoTaskMemAlloc(data.byteSize());
 		 size = data.Size();
-		 for(int i = 0; i<data.Size(); i++){
-			 char* array = arrayofPairs[i].first.toCharArray();
+		 for(int i = 0; i<size; i++){
+			 char* array = arrayofPairs[i].first.c_str();
 			 netname[i] = (char*)CoTaskMemAlloc(strlen(array) + 1);
 			 strcpy(netname[i], array);
 		     netname[i][strlen(array) + 1] = '\0';
-			 array = arrayofPairs[i].second.toCharArray();
+			 array = arrayofPairs[i].second.c_str();
 			 path[i] = (char*)CoTaskMemAlloc(strlen(array) + 1);
 			 strcpy(path[i], array);
 		     path[i][strlen(array) + 1] = '\0';
 		 }
 	 }
-
 
 	 bool DllExport DeleteFileSharing(char* netname){
 		DWORD reversed = 0;
@@ -85,28 +145,46 @@ extern "C"{
 	     return (netapistatus == ERROR_SUCCESS);
 	 }
 
-	 void DllExport OpenFileDialog(char** path){
-		        OPENFILENAMEA OpenDialog = {0};
-				char fileName[MAX_PATH] = "";
-				OpenDialog.lStructSize = sizeof(OpenDialog);
-				OpenDialog.hwndOwner = NULL;
-				OpenDialog.lpstrFilter = "All Files (*.*)\0*.*\0";
-				OpenDialog.lpstrFile = fileName;
-				OpenDialog.nMaxFile = MAX_PATH;
-				OpenDialog.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-			    OpenDialog.lpstrDefExt = "";
-				if (GetOpenFileNameA(&OpenDialog)){ ///atribuie adresa
-					 *path = (char*) CoTaskMemAlloc(strlen(fileName) * sizeof(char) + 1);
-					 strcpy(*path, fileName);
-				}
+	 //Personalization part of the code
+	 bool DllExport SetBackgroundLayout(char* layoutType){
+	      if(strlen(layoutType) > 0)
+		  {
+		      return SystemParametersInfoA(SPI_SETDESKPATTERN, 0, layoutType, SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
+		  }
+		  return false;
 	 }
 
+	 bool DllExport SetFontSmoothing(){
+	    return SystemParametersInfo(SPI_SETFONTSMOOTHING,
+                     TRUE,
+                     0,
+                     SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
+	 }
+
+	 bool DllExport ChangeBackgroundWallpaper(){
+		   OPENFILENAMEA OpenDialog = {0};
+		   char filePath[MAX_PATH] = "";
+		   OpenDialog.lStructSize = sizeof(OpenDialog);
+		   OpenDialog.hwndOwner = NULL;
+		   OpenDialog.lpstrFilter = "All Files (*.*)\0*.*\0";
+		   OpenDialog.lpstrFile = filePath;
+		   OpenDialog.nMaxFile = MAX_PATH;
+		   OpenDialog.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+		   OpenDialog.lpstrDefExt = "";
+		   if (GetOpenFileNameA(&OpenDialog))
+		   {
+			   return SystemParametersInfoA(SPI_SETDESKWALLPAPER, 0, filePath, SPIF_UPDATEINIFILE);
+		   }
+		   return false;
+	 }
+
+	//Screen settings stuff..
     int DllExport ChangeScreenResolutionU(int height, int width){
-		  DisplaySettings_unsafe displaySettings(height, width);
-		  return displaySettings.Set();
+		DisplaySettings_unsafe displaySettings(height, width);
+		return displaySettings.Set();
 	}
 
-	bool DllExport GetAvailableScreenResolutionIndex(int* &output, int &size){
+	bool DllExport GetAvailableScreenResolutionIndex(int** output, int& size){
 	    DISPLAY_DEVICE display_device = {0};
 		display_device.cb = sizeof(DISPLAY_DEVICE);
 		int i = 0;
@@ -119,7 +197,7 @@ extern "C"{
 			   }
 			   i++;
 		}
-		output = indexNoList.ToArray();
+		*output = indexNoList.ToArray();
 		size = indexNoList.Size();
 		return true;
 	}
@@ -133,7 +211,7 @@ extern "C"{
 		   outputinStrings = screenResolutions.GetArray();
 		   output = (char**)CoTaskMemAlloc(byteSize);
 		   for(int i = 0; i<size; i++){ 
-			    char* array = outputinStrings[i].toCharArray();
+			    char* array = outputinStrings[i].c_str();
 			    output[i] = (char*)CoTaskMemAlloc(strlen(array) + 1);
 			    strcpy(output[i], array);
 				output[i][strlen(array) + 1] = '\0';

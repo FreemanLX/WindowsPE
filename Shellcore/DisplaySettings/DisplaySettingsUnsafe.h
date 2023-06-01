@@ -1,4 +1,10 @@
-#include "framework.h"
+#include <windows.h>
+#include <wingdi.h>
+#include <WinUser.h>
+#include <commdlg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <commdlg.h>
 
 #pragma once
 class DisplaySettings_unsafe
@@ -45,7 +51,7 @@ class DisplaySettings_unsafe
 				devmode.dmDisplayFrequency = rate;
 				devmode.dmColor = color;
 				devmode.dmFields = DM_PELSHEIGHT | DM_PELSWIDTH;
-				error = ChangeDisplaySettings(&devmode, CDS_FULLSCREEN);
+				error = ChangeDisplaySettings(&devmode, CDS_UPDATEREGISTRY | CDS_GLOBAL | CDS_RESET);
 			}
 			return error;
 		}

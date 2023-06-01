@@ -5,300 +5,246 @@
 #include <atlcomcli.h>
 #include <netfw.h>
 
+#include "../Shellcore/NativeClasses/StringUnsafe/stringUnsafe.h" //defining the string unsafe.
+
 #pragma comment(lib, "ole32.lib")
 #pragma comment(lib, "oleaut32.lib")
 #pragma comment(lib, "comsuppw.lib")
 
-#define NET_FW_RULE_DIR_IN_NAME L"In"
-#define NET_FW_RULE_DIR_OUT_NAME L"Out"
-
-#define NET_FW_RULE_ENABLE_IN_NAME L"TRUE"
-#define NET_FW_RULE_DISABLE_IN_NAME L"FALSE"
-
-
-struct firewallData{
-	     char* program;
-	     char* name;
-		 char* localAddress;
-		 char* remoteAddress;
-		 char* profile;
-		 char* localPort;
-		 char* remotePort;
-		 char* action;
-		 char* protocol;
-		 bool enabled;
-		 bool outbound; //true - out, false - in
-
-		 void copy(char* output, char* set){
-		      output = (char*) malloc ((strlen(set) + 1) * sizeof(char));
-			  strcpy(output, set);
-		 }
-		 
-		 void alloc(char* output, int size){
-		      output = (char*) malloc(size * sizeof(char));
-		 }
-
-		 firewallData(){
-			  localPort = (char*) malloc(7 * sizeof(char));
-			  remotePort = (char*) malloc(7 * sizeof(char));
-			  protocol = (char*) malloc(7 * sizeof(char));
-			  strcpy(protocol, "Any");
-			  strcpy(localPort, "Any");
-			  strcpy(remotePort, "Any");
-		 }
-		  
-		 firewallData(char* _program, char* _name, char* _localAddress, char* _remoteAddress, 
-			          char* _profile, char* _localPort, char* _remotePort, char* _action, 
-			          char* _protocol, bool _enabled, bool _outbound){
-		      
-			 copy(program, _program);
-			 copy(name, _name);
-			 copy(localAddress, _localAddress);
-			 copy(remoteAddress, _remoteAddress);
-			 copy(profile, _profile);
-			 copy(localPort, _localPort);
-			 copy(remotePort, _remotePort);
-			 copy(action, _action);
-			 copy(protocol, _protocol);
-			 enabled = _enabled;
-			 outbound = _outbound;
-		 }
+//struct for extracting data
+struct firewallData
+{
+	int protocol; //6 - tcp, 17 - udp, 0 - icmpv4
+    int enabled;
+	int outbound; //true - out, false - in
+	int action;
+	long profile;
+	COM::string_unsafe program;
+	COM::string_unsafe name;
+	COM::string_unsafe localAddress;
+	COM::string_unsafe remoteAddress;
+	COM::string_unsafe localPort;
+	COM::string_unsafe remotePort;
 };
-
 
 class firewall
 {
     LinkedList_unsafe<firewallData> data;
-	HRESULT hrComInit = S_OK;
-	HRESULT hr = S_OK;
-	IUnknown *pEnumerator;
-    IEnumVARIANT* pVariant;
     INetFwPolicy2 *pNetFwPolicy2;
-    INetFwRules *pFwRules;
-    INetFwRule *pFwRule;
 	bool initialization;
 	long size;
-	long memsize;
 
-	//(C) Microsoft Corp Function Example
-	HRESULT WFCOMInitialize(INetFwPolicy2** ppNetFwPolicy2)
-	{
-		HRESULT hr = S_OK;
-
-		hr = CoCreateInstance(
+	HRESULT WFCOMInitialize(INetFwPolicy2** ppNetFwPolicy2) {
+		HRESULT tmp = CoCreateInstance(
 			__uuidof(NetFwPolicy2), 
 			NULL, 
 			CLSCTX_INPROC_SERVER, 
 			__uuidof(INetFwPolicy2), 
 			(void**)ppNetFwPolicy2);
-
-		if (FAILED(hr))
-		{
-			wprintf(L"CoCreateInstance for INetFwPolicy2 failed: 0x%08lx\n", hr);
-			return hr;  
-		}
-		return hr;
+		return tmp;
 	}
-
 
 public:
 	firewall(){
-      	 //   data = (firewallData*) malloc(sizeof(firewallData));
-        pVariant = NULL;
         pNetFwPolicy2 = NULL;
-        pFwRules = NULL;
-        pFwRule = NULL; 
 		initialization = false;
-		//data = new LinkedList_unsafe<firewallData>();
 		size = 0;
-		memsize = 0;
 	}
 
+
+	//Cleaning what was initialized with com per se.
 	~firewall(){
-		if (pFwRule != NULL) pFwRule->Release();
-		if (pNetFwPolicy2 != NULL) pNetFwPolicy2->Release();
+		if(pNetFwPolicy2 != NULL) {
+			pNetFwPolicy2->Release();
+		}
 		if(initialization) CoUninitialize();
 		initialization = false;
-	  //  free(data);
 	}
 
-
-	bool Initialize(){
-		if(FAILED(CoInitializeEx(0, COINITBASE_MULTITHREADED))){
-		   return false; //failed
-		}
-		if(FAILED(WFCOMInitialize(&pNetFwPolicy2))){
-		    return false;
-		}
+	//Initializing the COM.
+	bool Initialize() {
+		HRESULT coerror = CoInitializeEx(0, COINIT_APARTMENTTHREADED);
+		if(FAILED(coerror) || 
+			FAILED(WFCOMInitialize(&pNetFwPolicy2))) return false;
+		
 		initialization = true;
 		return true;
 	}
 
-
-	bool GettingFirewallSetting()
-	{
- 	    if(FAILED(pNetFwPolicy2->get_Rules(&pFwRules)))
-		{
-		    return false;
+	bool CheckIfFirewallIsEnabled(NET_FW_PROFILE_TYPE2 firewallType) {
+		VARIANT_BOOL enabled = 0;
+	    if(!(FAILED(pNetFwPolicy2->get_FirewallEnabled(firewallType, &enabled)))) {
+		    return (enabled == 0) ? false : true;
 		}
-		hr = pFwRules->get_Count(&size);
-		if(FAILED(hr)) return false;
- 		pFwRules->get__NewEnum(&pEnumerator);
+		return false;
+	}
+
+	bool EnableFirewall(NET_FW_PROFILE_TYPE2 firewallType) {
+	    if(!CheckIfFirewallIsEnabled(firewallType)) { 
+		    return SUCCEEDED(pNetFwPolicy2->put_FirewallEnabled(firewallType, -1));
+		}
+	    return true; //is already enabled
+	}
+
+	bool DisableFirewall(NET_FW_PROFILE_TYPE2 firewallType) {
+	    if(CheckIfFirewallIsEnabled(firewallType)) { 
+		    return SUCCEEDED(pNetFwPolicy2->put_FirewallEnabled(firewallType, 0));
+		}
+	    return true; //is already disabled
+	}
+
+	bool GettingFirewallSetting() {
+		HRESULT hr;
+
+		//defining the firewall rules
+		INetFwRules *pFwRules;
+
+		//defining the rule for extraction
+        INetFwRule *pFwRule;
+
+		//iterations
+		IUnknown *pEnumerator;
+        IEnumVARIANT* pVariant = NULL;
+
+		//retrieving the firewall rules.
+ 	    if(FAILED(pNetFwPolicy2->get_Rules(&pFwRules)) || 
+			FAILED(pFwRules->get_Count(&size))) {
+		    
+			pFwRules->Release();
+			return false; 
+		}
+		
+		//retrieving the enumerator pointer
+		pFwRules->get__NewEnum(&pEnumerator);
 		if(pEnumerator)
 		    hr = pEnumerator->QueryInterface(__uuidof(IEnumVARIANT), (void **) &pVariant);
 		
 		CComVariant var;
-		long i = 0;
 		unsigned long cFeteched = 0;
 		while(SUCCEEDED(hr) && hr != S_FALSE)
 		{
 			firewallData dataline; 
 		    var.Clear();
-			hr = pVariant ->Next(1, &var, &cFeteched);
-			if(S_FALSE != hr && SUCCEEDED(hr))
-			{
-			    if(SUCCEEDED(var.ChangeType(VT_DISPATCH)) && SUCCEEDED((V_DISPATCH(&var))->QueryInterface(__uuidof(INetFwRule), reinterpret_cast<void**>(&pFwRule))))
-				{
+			hr = pVariant->Next(1, &var, &cFeteched);
+			if(S_FALSE != hr && SUCCEEDED(hr)) {
+			    if(SUCCEEDED(var.ChangeType(VT_DISPATCH)) && 
+					   SUCCEEDED((V_DISPATCH(&var))->QueryInterface(__uuidof(INetFwRule), reinterpret_cast<void**>(&pFwRule)))) {
 				    BSTR bstrVal;
-					if(SUCCEEDED(pFwRule->get_Name(&bstrVal)))
-					{
-						dataline.name = _com_util::ConvertBSTRToString(bstrVal);
-					}
-					if (SUCCEEDED(pFwRule->get_ApplicationName(&bstrVal)))
-					{
-						dataline.program = _com_util::ConvertBSTRToString(bstrVal);
-					}
-					if (SUCCEEDED(pFwRule->get_LocalAddresses(&bstrVal)))
-					{
-						dataline.localAddress = _com_util::ConvertBSTRToString(bstrVal);
-					}
-					if (SUCCEEDED(pFwRule->get_RemoteAddresses(&bstrVal)))
-					{
-						dataline.remoteAddress = _com_util::ConvertBSTRToString(bstrVal);
-					}
-					long lVal;
-					if (SUCCEEDED(pFwRule->get_Protocol(&lVal)))
-					{
-						dataline.protocol = new char[4];
-						switch(lVal)
-						{
-							case NET_FW_IP_PROTOCOL_TCP: 
-								strcpy(dataline.protocol, "TCP");			
-								break;
-
-							case NET_FW_IP_PROTOCOL_UDP: 
-								strcpy(dataline.protocol, "UDP");
-								break;
-
-							default:
-								break;
-						}
-						if(lVal != NET_FW_IP_VERSION_V4 && lVal != NET_FW_IP_VERSION_V6)
-						{
-							
-							if (SUCCEEDED(pFwRule->get_LocalPorts(&bstrVal)))
-							{    
-								dataline.localPort = _com_util::ConvertBSTRToString(bstrVal);
-							}
-
-							if (SUCCEEDED(pFwRule->get_RemotePorts(&bstrVal)))
-							{
-								dataline.remotePort = _com_util::ConvertBSTRToString(bstrVal);
-							}
-						}
-						else
-						{
-							if (SUCCEEDED(pFwRule->get_IcmpTypesAndCodes(&bstrVal)))
-							{
-								dataline.localPort = new char[5];
-								dataline.remotePort = new char[5];
-								strcpy(dataline.protocol, "ICMP");
-								strcpy(dataline.remotePort, "None");
-								strcpy(dataline.localPort, "None");
-							}
-						}
-
-				    }
-					else {
-					    dataline.localPort = new char[5];
-					    dataline.remotePort = new char[5];
-						strcpy(dataline.protocol, "Any");
-						strcpy(dataline.remotePort, "Any");
-						strcpy(dataline.localPort, "Any");
-					}
 					NET_FW_ACTION fwAction;
 					NET_FW_RULE_DIRECTION fwDirection;
-					dataline.action = new char[6];
-					if (SUCCEEDED(pFwRule->get_Action(&fwAction)))
-					{
-						switch(fwAction)
-						{
-							case NET_FW_ACTION_BLOCK:
-								strcpy(dataline.action, "Block");
-								break;
-
-							case NET_FW_ACTION_ALLOW:
-								strcpy(dataline.action, "Allow");
-								break;
-
-							default:
-								break;
-						}
-					}
-					if (SUCCEEDED(pFwRule->get_Direction(&fwDirection)))
-				    {
-						dataline.outbound = (fwDirection == NET_FW_RULE_DIR_OUT) ? true : false;
-				    }
 					VARIANT_BOOL enabled;
-					if (SUCCEEDED(pFwRule->get_Enabled(&enabled)))
-				    {
-						dataline.enabled = (enabled == -1) ? true : false;
+					
+					//because on string_unsafe we defined explicitely conversion from BSTR, now is taking directly.
+					if(SUCCEEDED(pFwRule->get_Name(&bstrVal)))
+						dataline.name = bstrVal;
+					
+					if (SUCCEEDED(pFwRule->get_ApplicationName(&bstrVal)))
+						dataline.program = bstrVal;
+					
+					if (SUCCEEDED(pFwRule->get_LocalAddresses(&bstrVal)))
+						dataline.localAddress = bstrVal;
+					
+					if (SUCCEEDED(pFwRule->get_RemoteAddresses(&bstrVal)))
+						dataline.remoteAddress = bstrVal;
+					
+					long lVal;
+					if (SUCCEEDED(pFwRule->get_Protocol(&lVal))) {
+						   dataline.protocol = lVal;
+						   
+						   if(lVal != 1 && lVal != 58) {
+							   if (SUCCEEDED(pFwRule->get_LocalPorts(&bstrVal)))
+								  dataline.localPort = bstrVal;
+						
+							   if (SUCCEEDED(pFwRule->get_RemotePorts(&bstrVal)))
+								  dataline.remotePort = bstrVal;
+						   }
 				    }
-					dataline.profile = new char[5];
-					strcpy(dataline.profile, "None");
+					
+					if (SUCCEEDED(pFwRule->get_Action(&fwAction)))
+						dataline.action = fwAction;
+					
+					if (SUCCEEDED(pFwRule->get_Direction(&fwDirection)))
+						dataline.outbound = fwDirection - 1;
+				    
+					if (SUCCEEDED(pFwRule->get_Enabled(&enabled)))
+				     	dataline.enabled = (enabled == -1) ? true : false;
+				    					
+					pFwRule->get_Profiles(&dataline.profile);
+					pFwRule->Release(); 
 			    }
 			}
-			//i++;
 			data.push_back(dataline);
-		}
-		memsize = data.byteSize();
+		}		
+
+		//cleaning up the extracted rules.
+		pFwRules->Release();
 	    return true;
 	}
 
-    bool addFirewallEntry(firewallData* firewallEntry){
-	    hr = WFCOMInitialize(&pNetFwPolicy2);
-		if(FAILED(hr)) return false;
-		hr = pNetFwPolicy2->get_Rules(&pFwRules);
-		if(FAILED(hr)) return false;
-		hr = CoCreateInstance(__uuidof(NetFwRule), NULL, CLSCTX_INPROC_SERVER, __uuidof(INetFwRule), (void**)&pFwRule);
-		if(FAILED(hr)){
-		   return false;
-		}
-		pFwRule->put_Name((BSTR)firewallEntry->name);
-		pFwRule->put_Description((BSTR)"");
-		if(strcmp(firewallEntry->protocol, "ICMP") == 0){
-			 pFwRule->put_Protocol(0);
-		}
-		else
-		{
-		   
-		}
-		pFwRule->put_Profiles(NET_FW_PROFILE2_PRIVATE);
-		pFwRule->put_Action(NET_FW_ACTION_ALLOW);
-		pFwRule->put_Enabled(VARIANT_TRUE);
+	//add firewall entry
+    bool addFirewallEntry(firewallData firewallEntry) {
+		 
+		  INetFwRules *pFwRules;
+          INetFwRule *pFwRule;
 
+		  //trying to retrieve the rules.
+		  if (FAILED(pNetFwPolicy2->get_Rules(&pFwRules))) return false;
+		
+		  //trying to create instance of a new pointer rule
+		  if(FAILED(CoCreateInstance(__uuidof(NetFwRule), NULL, CLSCTX_INPROC_SERVER, __uuidof(INetFwRule), (void**)&pFwRule))) return false;
+		
+		  //checking if we can insert info per every object
+		  if(FAILED(pFwRule->put_Name(firewallEntry.name.b_str()))) return false;
+		  pFwRule->put_Action((NET_FW_ACTION)firewallEntry.action); //1 - allow and 0 - block
+		  pFwRule->put_Enabled(VARIANT_TRUE);
+ 
+		  if(firewallEntry.program.length() > 0 && 
+			         FAILED(pFwRule->put_ApplicationName(firewallEntry.program.b_str())))
+		       return false;
+		 
+	      if(FAILED(pFwRule->put_Protocol(firewallEntry.protocol))) 
+			   return false;
+
+		  if(firewallEntry.localPort.length() > 0 && 
+			          FAILED(pFwRule->put_LocalPorts(firewallEntry.localPort.b_str())))
+			   return false;
+
+		  if(firewallEntry.remotePort.length() > 0 &&  
+			          FAILED(pFwRule->put_RemotePorts(firewallEntry.remotePort.b_str())))
+			   return false;
+				 
+		  if(firewallEntry.localAddress.length() > 0 && 
+			          FAILED(pFwRule->put_LocalAddresses(firewallEntry.localAddress.b_str())))
+			   return false;
+
+		  if(firewallEntry.remoteAddress.length() > 0 && 
+			          FAILED(pFwRule->put_RemoteAddresses(firewallEntry.remoteAddress.b_str())))
+			   return false;
+		 
+		  pFwRule->put_Profiles(firewallEntry.profile);
+		  pFwRule->put_Direction((NET_FW_RULE_DIRECTION) (firewallEntry.outbound + 1));
+		 
+		  //adding and checking the rule.
+		  HRESULT HR = pFwRules->Add(pFwRule);
+		  bool status = SUCCEEDED(HR);
+
+		  //cleaning
+          pFwRule->Release();
+		  pFwRules->Release();
+		  return status;
 	}
 
-	bool deleteFirewallEntry(firewallData& firewallEntry){
-	   
+	bool deleteFirewallEntry(string_unsafe rule){
+	     INetFwRules *pFwRules;
+		 //trying to retrieve the rules.
+		 if (FAILED(pNetFwPolicy2->get_Rules(&pFwRules))) return false;
+		 bool status =  SUCCEEDED(pFwRules->Remove(rule.b_str()));
+		 pFwRules->Release();
+		 return status;
 	}
 
 	int Length(){
 	   return size;
-	}
-
-	int MemSize(){
-	   return memsize;
 	}
 
 	firewallData* getFirewallEnum(){

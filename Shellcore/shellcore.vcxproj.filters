@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="NativeClasses\LinkedListUnsafe\LinkedListUnsafe.h">
+      <Filter>NativeClasses\LinkedListUnsafe</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeClasses\StringUnsafe\stringUnsafe.h">
+      <Filter>NativeClasses\StringUnsafe</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplaySettings\DisplaySettingsUnsafe.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplaySettings\EnumScreenResolutionUnsafe.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeClasses\LinkedListUnsafe\pairUnsafe.h">
+      <Filter>NativeClasses\LinkedListUnsafe</Filter>
+    </ClInclude>
+    <ClInclude Include="Firewall\firewall.h">
+      <Filter>Firewall</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="NativeClasses">
+      <UniqueIdentifier>{d4e5c571-7676-404c-bf93-d37f9085f52f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NativeClasses\StringUnsafe">
+      <UniqueIdentifier>{31c680d8-b140-4d4a-83e2-2ff27c8eda9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NativeClasses\LinkedListUnsafe">
+      <UniqueIdentifier>{48ab3c4d-e547-4ab5-bb6b-a932ef56fcbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Display">
+      <UniqueIdentifier>{4c69e808-9d18-4049-a056-54965d375776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Firewall">
+      <UniqueIdentifier>{78f9c9e6-d58a-4dbc-9c01-09ca366c1d80}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

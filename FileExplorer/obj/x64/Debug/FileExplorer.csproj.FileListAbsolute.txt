@@ -1,0 +1,13 @@
+E:\WindowsPE_Projects\FileExplorer\bin\x64\Debug\FileExplorer.exe.config
+E:\WindowsPE_Projects\FileExplorer\bin\x64\Debug\FileExplorer.exe
+E:\WindowsPE_Projects\FileExplorer\bin\x64\Debug\FileExplorer.pdb
+E:\WindowsPE_Projects\FileExplorer\obj\x64\Debug\WindowsPE.File_explorer.resources
+E:\WindowsPE_Projects\FileExplorer\obj\x64\Debug\FileExplorer.Properties.Resources.resources
+E:\WindowsPE_Projects\FileExplorer\obj\x64\Debug\FileExplorer.csproj.GenerateResource.cache
+E:\WindowsPE_Projects\FileExplorer\obj\x64\Debug\FileExplorer.csproj.CoreCompileInputs.cache
+E:\WindowsPE_Projects\FileExplorer\obj\x64\Debug\FileExplorer.exe
+E:\WindowsPE_Projects\FileExplorer\obj\x64\Debug\FileExplorer.pdb
+E:\WindowsPE_Projects\bin\System32\FileExplorer.exe.config
+E:\WindowsPE_Projects\bin\System32\FileExplorer.exe
+E:\WindowsPE_Projects\bin\System32\FileExplorer.pdb
+E:\WindowsPE_Projects\FileExplorer\obj\x64\Debug\FileExplorer.csprojAssemblyReference.cache

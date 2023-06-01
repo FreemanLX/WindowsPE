@@ -1,0 +1,13 @@
+E:\WindowsPE_Projects\CustomTaskBar\bin\x64\Debug\CustomTaskBar.exe.config
+E:\WindowsPE_Projects\CustomTaskBar\bin\x64\Debug\CustomTaskBar.exe
+E:\WindowsPE_Projects\CustomTaskBar\bin\x64\Debug\CustomTaskBar.pdb
+E:\WindowsPE_Projects\CustomTaskBar\obj\x64\Debug\CustomTaskBar.Properties.Resources.resources
+E:\WindowsPE_Projects\CustomTaskBar\obj\x64\Debug\CustomTaskBar.csproj.GenerateResource.cache
+E:\WindowsPE_Projects\CustomTaskBar\obj\x64\Debug\CustomTaskBar.csproj.CoreCompileInputs.cache
+E:\WindowsPE_Projects\CustomTaskBar\obj\x64\Debug\CustomTaskBar.exe
+E:\WindowsPE_Projects\CustomTaskBar\obj\x64\Debug\CustomTaskBar.pdb
+E:\WindowsPE_Projects\bin\System32\CustomTaskBar.exe.config
+E:\WindowsPE_Projects\bin\System32\CustomTaskBar.exe
+E:\WindowsPE_Projects\bin\System32\CustomTaskBar.pdb
+E:\WindowsPE_Projects\CustomTaskBar\obj\x64\Debug\WindowsPE.Main.resources
+E:\WindowsPE_Projects\CustomTaskBar\obj\x64\Debug\CustomTaskBar.csprojAssemblyReference.cache

@@ -2,13 +2,12 @@
 
 template <class T, class U>
 class pair_unsafe{
-public:
+
+ public:
 	T first;
 	U second;
-	
-	pair_unsafe(){
 
-	}
+	pair_unsafe() {}
 
 	pair_unsafe(T first, U second){
 	   this->first = first;
