@@ -1,0 +1,421 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A2EBB94F-9F1D-45E5-8570-6AAAEB61566C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SettingsApp</RootNamespace>
+    <AssemblyName>SettingsApp</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\System32\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\System32\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>CP010.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management.Instrumentation" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Algorithms\AdaptiveMethods.cs" />
+    <Compile Include="Algorithms\ExternalMethods.FileSharingApi.cs" />
+    <Compile Include="Algorithms\ExternalMethods.FirewallApi.cs" />
+    <Compile Include="Algorithms\ExternalMethods.PersonalizationApi.cs" />
+    <Compile Include="Algorithms\ExternalMethods.ScreenApi.cs" />
+    <Compile Include="Algorithms\ExternalStructures.cs" />
+    <Compile Include="Algorithms\Pair.cs" />
+    <Compile Include="Algorithms\QuickSort.cs" />
+    <Compile Include="Data\Data.cs" />
+    <Compile Include="SettingsPanels\Default form.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Default form.Designer.cs">
+      <DependentUpon>Default form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\FirewallStatus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\FirewallStatus.Designer.cs">
+      <DependentUpon>FirewallStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Personalization\DisplayForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Personalization\DisplayForm.Designer.cs">
+      <DependentUpon>DisplayForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Share\FilesharingForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Share\FilesharingForm.Designer.cs">
+      <DependentUpon>FilesharingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\FirewallForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\FirewallForm.Designer.cs">
+      <DependentUpon>FirewallForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleFirewall.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleFirewall.Designer.cs">
+      <DependentUpon>AddNewRuleFirewall.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Data.Firewall.cs" />
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\FirewallUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\NewRulePort.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\NewRulePort.Designer.cs">
+      <DependentUpon>NewRulePort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleAction.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleAction.Designer.cs">
+      <DependentUpon>RuleAction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleProfile.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleProfile.Designer.cs">
+      <DependentUpon>RuleProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleSelectPrograms.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleSelectPrograms.Designer.cs">
+      <DependentUpon>RuleSelectPrograms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleSelectScope.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleSelectScope.Designer.cs">
+      <DependentUpon>RuleSelectScope.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleSelectScopeSplitted.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleSelectScopeSplitted.Designer.cs">
+      <DependentUpon>RuleSelectScopeSplitted.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleType.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleType.Designer.cs">
+      <DependentUpon>RuleType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\ChangeFirewallStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\ChangeFirewallStatus.Designer.cs">
+      <DependentUpon>ChangeFirewallStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\FirewallRules.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\FirewallRules.Designer.cs">
+      <DependentUpon>FirewallRules.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\ProfileCheckBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Firewall\ProfileCheckBox.Designer.cs">
+      <DependentUpon>ProfileCheckBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkForm.Designer.cs">
+      <DependentUpon>ChangeNetworkForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkPanels\SetInterface.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkPanels\SetInterface.Designer.cs">
+      <DependentUpon>SetInterface.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddressDNS.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddressDNS.Designer.cs">
+      <DependentUpon>SetIPAddressDNS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddressIpv4.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddressIpv4.Designer.cs">
+      <DependentUpon>SetIPAddressIpv4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddressIpv6.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddressIpv6.Designer.cs">
+      <DependentUpon>SetIPAddressIpv6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddress.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddress.Designer.cs">
+      <DependentUpon>SetIPAddress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\NetworkForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\NetworkForm.Designer.cs">
+      <DependentUpon>NetworkForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\NetworkObject.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\NetworkObject.Designer.cs">
+      <DependentUpon>NetworkObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Networking\SetupNetworkInterface.cs" />
+    <Compile Include="SettingsPanels\Personalization\PersonalizationForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Personalization\PersonalizationForm.Designer.cs">
+      <DependentUpon>PersonalizationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Share\ShareDataLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Share\ShareDataLayout.Designer.cs">
+      <DependentUpon>ShareDataLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Share\ShareData.cs" />
+    <Compile Include="SettingsPanels\Share\ShareWizard_Confirmation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Share\ShareWizard_Confirmation.Designer.cs">
+      <DependentUpon>ShareWizard_Confirmation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Share\ShareWizard_Location.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Share\ShareWizard_Location.Designer.cs">
+      <DependentUpon>ShareWizard_Location.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\Share\ShareWizard_Name.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\Share\ShareWizard_Name.Designer.cs">
+      <DependentUpon>ShareWizard_Name.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="SettingsPanels\Default form.resx">
+      <DependentUpon>Default form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\FirewallStatus.resx">
+      <DependentUpon>FirewallStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Personalization\DisplayForm.resx">
+      <DependentUpon>DisplayForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Share\FilesharingForm.resx">
+      <DependentUpon>FilesharingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\FirewallForm.resx">
+      <DependentUpon>FirewallForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\AddNewRuleFirewall.resx">
+      <DependentUpon>AddNewRuleFirewall.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\AddNewRuleUCP\NewRulePort.resx">
+      <DependentUpon>NewRulePort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleAction.resx">
+      <DependentUpon>RuleAction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleProfile.resx">
+      <DependentUpon>RuleProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleSelectPrograms.resx">
+      <DependentUpon>RuleSelectPrograms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleSelectScope.resx">
+      <DependentUpon>RuleSelectScope.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleSelectScopeSplitted.resx">
+      <DependentUpon>RuleSelectScopeSplitted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\AddNewRuleUCP\RuleType.resx">
+      <DependentUpon>RuleType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\ChangeFirewallStatus.resx">
+      <DependentUpon>ChangeFirewallStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\FirewallRules.resx">
+      <DependentUpon>FirewallRules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Firewall\ProfileCheckBox.resx">
+      <DependentUpon>ProfileCheckBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Networking\ChangeNetworkForm.resx">
+      <DependentUpon>ChangeNetworkForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Networking\ChangeNetworkPanels\SetInterface.resx">
+      <DependentUpon>SetInterface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddressDNS.resx">
+      <DependentUpon>SetIPAddressDNS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddressIpv4.resx">
+      <DependentUpon>SetIPAddressIpv4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddressIpv6.resx">
+      <DependentUpon>SetIPAddressIpv6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Networking\ChangeNetworkPanels\SetIPAddress.resx">
+      <DependentUpon>SetIPAddress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Networking\NetworkForm.resx">
+      <DependentUpon>NetworkForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Networking\NetworkObject.resx">
+      <DependentUpon>NetworkObject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Personalization\PersonalizationForm.resx">
+      <DependentUpon>PersonalizationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Share\ShareDataLayout.resx">
+      <DependentUpon>ShareDataLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Share\ShareWizard_Confirmation.resx">
+      <DependentUpon>ShareWizard_Confirmation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Share\ShareWizard_Location.resx">
+      <DependentUpon>ShareWizard_Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\Share\ShareWizard_Name.resx">
+      <DependentUpon>ShareWizard_Name.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CP010.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

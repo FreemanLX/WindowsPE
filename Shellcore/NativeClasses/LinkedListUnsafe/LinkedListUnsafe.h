@@ -94,12 +94,43 @@ public:
 	    return elementsize;
 	}
 
+
+	//Converts to array, allocated by using new
 	__no_pointer_variable* ToArray(){
         __no_pointer_variable* array = new __no_pointer_variable[elemcount];
 		int i = 0;
 		Node<__no_pointer_variable>* node = elements;
 		while(node != NULL){
 			array[i++] = node->GetData();
+			node = node->getNext();
+		}
+		return array;
+    }
+
+	//Converts to array, allocated by using COTaskMemAlloc
+	__no_pointer_variable* ToCOMTaskAllocArray(int memsize){
+	   __no_pointer_variable* array = (__no_pointer_variable*) CoTaskMemAlloc(memsize);
+	    memset(array, 0, memsize);
+		int i = 0;
+ 		Node<__no_pointer_variable>* node = elements;
+		while(node != NULL){
+			*(array + i) = node->GetData();
+			i++;
+			node = node->getNext();
+		}
+		return array;
+	
+	}
+
+	//Converts to array, allocated by using malloc
+	__no_pointer_variable* ToMallocArray(int memsize){
+        __no_pointer_variable* array = (__no_pointer_variable*) malloc(memsize);
+		memset(array, 0, memsize);
+		int i = 0;
+ 		Node<__no_pointer_variable>* node = elements;
+		while(node != NULL){
+			*(array + i) = node->GetData();
+			i++;
 			node = node->getNext();
 		}
 		return array;
