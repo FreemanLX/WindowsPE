@@ -11,9 +11,7 @@ namespace WindowsPE
         /// Display personalization
         /// </summary>
         public static Size screenResolution = new Size(0, 0);
-        public static Dictionary<int, string[]> resolutions = null;
-        public static int[] DisplayIndex = null;
-        public static SettingsForm settingsForm;
+        public static Settings.SettingsForm settingsForm;
 
         /// <summary>
         /// Desktop personalization

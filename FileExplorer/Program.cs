@@ -10,7 +10,7 @@ namespace FileExplorer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WindowsPE.File_explorer());
+            Application.Run(new WindowsPE.FileExplorer());
         }
     }
 }

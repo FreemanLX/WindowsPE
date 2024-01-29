@@ -4,163 +4,237 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using FileExplorer.Properties;
+using System.Security.AccessControl;
+using System.Threading.Tasks;
 
 namespace WindowsPE
 {
-    public partial class File_explorer : Form
+    public partial class FileExplorer : Form
     {
-        DirectoryInfo DirectoryList;
-        int index = 0;
-        List<Icon> icons = new List<Icon>();
-        public File_explorer()
+        List<string> Forward = new List<string>();
+
+        Icon folderIcon = AdaptiveMethods.GetIcon("shell32.dll", 3);
+        Icon dllIcon = AdaptiveMethods.GetIcon("shell32.dll", 72);
+
+        string backup;
+
+        private void BackwardButton_Click(object sender, EventArgs e)
+        {
+            if (Forward.Count > 0)
+            {
+                if (!Forward[Forward.Count - 1].StartsWith("Search://"))
+                {
+                    LoadFromSelectedDirectory(Forward[Forward.Count - 1]);
+                    Forward.RemoveAt(Forward.Count - 1);
+                }
+            }
+        }
+
+        string FileSizeConversion(long size)
+        {
+            if (size < 1024) return size.ToString() + " B";
+            return (size / 1024).ToString() + " KB";
+        }
+        public FileExplorer()
         {
              InitializeComponent();
-             icons = AdaptiveMethods.getIcons(); 
+             fileImageTreeList.Images.Add(folderIcon);
+             ContentGrid.MouseClick += ContentGrid_MouseClick;
         }
-        
-        List<string> Forward = new List<string>();
-        string backup;
+
+        private void SetFileInfo(FileInfo selectedFile)
+        {
+            DataGridViewImageCell nameCell = new DataGridViewImageCell() { ValueIsIcon = true };
+            nameCell.Value = (selectedFile.Extension != ".dll") ? ExternalMethods.GetSmallIcon(selectedFile.FullName) : dllIcon;
+            ContentGrid.Rows.Add(nameCell.Value, selectedFile.Name, selectedFile.LastWriteTime.ToString(), FileSizeConversion(selectedFile.Length));
+        }
 
         void LoadFromSelectedDirectory(string data)
         {     
             ContentGrid.Rows.Clear();
             Location.Text = data;
-            DirectoryList = new DirectoryInfo(data);
-            FileInfo[] files = DirectoryList.GetFiles();
-            DirectoryInfo[] directories = DirectoryList.GetDirectories();
+            DirectoryInfo DirectoryList = new DirectoryInfo(data);
 
-            foreach (DirectoryInfo directory in directories)
+            foreach (DirectoryInfo directory in DirectoryList.GetDirectories())
             {
-                try
-                {
-                    directory.GetDirectories();
-                    DataGridViewImageCell nameCell = new DataGridViewImageCell
-                    {
-                        Value = icons[4],
-                        ValueIsIcon = true
-                    };
-                    ContentGrid.Rows.Add(icons[4], directory.Name, directory.LastWriteTimeUtc, "");
-                }
-                catch
-                {
-                     continue; 
-                }    
+                if(!directory.Attributes.HasFlag(FileAttributes.Hidden))
+                ContentGrid.Rows.Add(folderIcon, directory.Name, directory.LastWriteTimeUtc, "");
+            }
+
+            foreach (FileInfo fileInfo in DirectoryList.GetFiles())
+            {
+                 if (!fileInfo.IsReadOnly && !fileInfo.Attributes.HasFlag(FileAttributes.Hidden))
+                 {
+                     SetFileInfo(fileInfo);
+                 }
             }
             
-            foreach (FileInfo fileInfo in files)
-            {
-                if(!fileInfo.IsReadOnly && !fileInfo.Attributes.HasFlag(FileAttributes.Hidden))
-                SetupItem(fileInfo);
-            }
             backup = Location.Text;
         }
 
 
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        private void locationBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                if (Location.Text.Length > 0)
+                if (Location.Text.Length > 0 && Directory.Exists(Location.Text))
                 {
-                    try 
-                    {
-                        LoadFromSelectedDirectory(Location.Text);
-                    }
-                    catch(DirectoryNotFoundException)
-                    {
-                        MessageBox.Show("Can not found the selected directory", "Not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        LoadFromSelectedDirectory(backup);
-                    }
-                    catch (IOException ioexception)
-                    {
-                        MessageBox.Show(ioexception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        LoadFromSelectedDirectory(backup);
-                    }
-               }
+                     LoadFromSelectedDirectory(Location.Text);
+                }
+                else
+                {
+                    MessageBox.Show(this, $"Windows can't find '{Location.Text}'. Check the spelling and try again.", "File Explorer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
-      
-        private void File_explorer_Load(object sender, EventArgs e)
+
+
+        private void GenerateTreeNode()
         {
             TreeNode root = new TreeNode
             {
-                Text = "This PC",
-                ImageIndex = 0
+                Text = "This PC", ImageIndex = 0
             };
             foreach (DriveInfo driver in DriveInfo.GetDrives())
             {
-                if(driver.IsReady == true) 
+                if (driver.IsReady == true)
                 {
-                    
                     TreeNode treeNode = new TreeNode
                     {
-                        Text = ((driver.VolumeLabel == "") ? "Local Disk" : driver.VolumeLabel) + " (" + driver.Name.Split('\\')[0] + ")",
-                        Tag = driver.Name
+                        Text = ((driver.VolumeLabel == "") ? "Local Disk" : driver.VolumeLabel) + " (" + driver.Name.Split('\\')[0] + ")", Tag = driver.Name
                     };
                     switch (driver.DriveType)
                     {
-                       case DriveType.CDRom:
-                             treeNode.SelectedImageIndex = treeNode.ImageIndex = 2;
-                             break;
+                        case DriveType.CDRom:
+                            treeNode.SelectedImageIndex = treeNode.ImageIndex = 2;
+                            break;
 
                         case DriveType.Network:
-                             treeNode.SelectedImageIndex = treeNode.ImageIndex = 3;
-                             break;
+                            treeNode.SelectedImageIndex = treeNode.ImageIndex = 3;
+                            break;
 
                         default:
-                             treeNode.SelectedImageIndex = treeNode.ImageIndex = 1;
-                             break;
+                            treeNode.SelectedImageIndex = treeNode.ImageIndex = 1;
+                            break;
+
                     }
-                    
+                    treeNode.Nodes.Add("Dummy");
                     root.Nodes.Add(treeNode);
                 }
             }
             fileTreeView.Nodes.Add(root);
+
+
+            fileTreeView.BeforeExpand += fileTreeView_BeforeExpand;
             fileTreeView.NodeMouseClick += new TreeNodeMouseClickEventHandler(fileTreeView_NodeMouseClick);
-            Location.Text = Path.GetPathRoot(Environment.SystemDirectory);
-            index++;
-            LoadFromSelectedDirectory(Location.Text);
         }
+
+        private void fileTreeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            TreeNode selected = e.Node;
+            if (selected.Tag != null)
+                CreateDirectoryNode(new DirectoryInfo(selected.Tag as string), selected);
+        }
+
+        private void CreateDirectoryNode(DirectoryInfo directoryInfo, TreeNode directoryNode)
+        {
+            directoryNode.Nodes.Clear();
+            try
+            {
+                DirectoryInfo[] directoriesInfo = directoryInfo.GetDirectories();
+                foreach (var directory in directoriesInfo)
+                {
+                    if (directory.Exists && !directory.Attributes.HasFlag(FileAttributes.Hidden))
+                    {
+                        TreeNode treeNode = new TreeNode { Text = directory.Name, Tag = directory.FullName, SelectedImageIndex = 5 };
+                        treeNode.ImageIndex = 5;
+                        treeNode.Nodes.Add("Dummy");
+                        directoryNode.Nodes.Add(treeNode);
+                    }
+                }
+            }
+            catch
+            {
+                return;
+            }
+        }
+
 
         private void fileTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             TreeNode selected = e.Node;
-            if(selected.Tag != null)
-              LoadFromSelectedDirectory(selected.Tag as string);
+            if (selected.Tag != null)
+                LoadFromSelectedDirectory(selected.Tag as string);
         }
 
-        void MovingNextDirectory()
+        private void FileExplorer_Load(object sender, EventArgs e)
         {
-            string selected_document = ContentGrid.SelectedRows[0].Cells[1].Value.ToString();
-            if ((File.GetAttributes(Location.Text + "\\" + selected_document) & FileAttributes.Directory) == FileAttributes.Directory)
+            GenerateTreeNode();
+            Location.Text = Path.GetPathRoot(Environment.SystemDirectory);
+            LoadFromSelectedDirectory(Location.Text);
+        }
+
+        public void Search(string filename, string locationPath)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(locationPath);
+            try
             {
-                if (Forward.IndexOf(Location.Text + "\\" + selected_document) == -1)
+                foreach (FileInfo fileInfo in directoryInfo.GetFiles())
                 {
-                    Forward.Clear();
+                    if (fileInfo.Name.ToLower().Contains(filename))
+                    {
+                        Invoke(new Action(() => SetFileInfo(fileInfo)));
+                    }
                 }
-                if (Location.Text[Location.Text.Length - 1] == '\\')
+            }
+            catch
+            {
+
+            }
+
+            try
+            {
+                foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
                 {
-                    LoadFromSelectedDirectory(Location.Text + selected_document);
+                    Search(filename, directory.FullName);
                 }
-                else
-                {
-                    LoadFromSelectedDirectory(Location.Text + "\\" + selected_document);
-                }
-                index++;
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void SearchBar_Click(object sender, EventArgs e) => SearchBar.Text = "";
+
+        private void SearchBar_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            string data = Location.Text;
+            if (SearchBar.Text != "" && e.KeyChar == (char)13)
+            {
+                ContentGrid.Rows.Clear();
+                Task.Run(() => Search(SearchBar.Text, data));
+                backup = data;
+            }
+        }
+
+        void MovingNextDirectory(string selectedPath)
+        {
+            if (File.GetAttributes(selectedPath).HasFlag(FileAttributes.Directory))
+            {
+                LoadFromSelectedDirectory(selectedPath);
             }
             else
             {
-                string FilePath = Location.Text + "\\" + selected_document;
-                if (File.Exists(FilePath))
+                if (File.Exists(selectedPath))
                 {
                     try
                     {
-                        System.Diagnostics.Process.Start(FilePath);
+                        System.Diagnostics.Process.Start(selectedPath);
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(e.Message, "Unable to open file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
 
@@ -173,51 +247,51 @@ namespace WindowsPE
             LoadFromSelectedDirectory(SelectedPath);
         }
 
-
         private void CopyOperation(string SelectedPath, bool Move)
         {
-            MemoryStream dropEffect = new MemoryStream();
-            DragDropEffects dragDropEffect = (Move) ?  DragDropEffects.Move : DragDropEffects.Copy;
-            byte[] aMoveEffect = BitConverter.GetBytes((int)dragDropEffect);
-            dropEffect.Write(aMoveEffect, 0, aMoveEffect.Length);
-            DataObject data = new DataObject();
-            StringCollection paths = new StringCollection
+            using (MemoryStream dropEffect = new MemoryStream())
             {
-                SelectedPath
-            };
-            data.SetFileDropList(paths);
-            data.SetData("Preferred DropEffect", dropEffect);
-            Clipboard.Clear();
-            Clipboard.SetDataObject(data, true);
+                byte[] aMoveEffect = BitConverter.GetBytes((Move) ? 2 : 1);
+                dropEffect.Write(aMoveEffect, 0, aMoveEffect.Length);
+                DataObject data = new DataObject();
+                StringCollection paths = new StringCollection
+                {
+                    SelectedPath
+                };
+                data.SetFileDropList(paths);
+                data.SetData("Preferred DropEffect", dropEffect);
+                Clipboard.Clear();
+                Clipboard.SetDataObject(data, true);
+            }
         }
 
         private void Delete(string SelectedPath)
         {
-                try
-                {
+              try
+              {
                     if (MessageBox.Show("Do you really want to permanently delete the selected file", "Delete request", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         if (Directory.Exists(SelectedPath)) Directory.Delete(SelectedPath);
                         if (File.Exists(SelectedPath)) File.Delete(SelectedPath);
                         Refresh(new DirectoryInfo(SelectedPath).Parent.FullName);
                     }
-                }
-                catch(FileNotFoundException)
-                {
+              }
+              catch(FileNotFoundException)
+              {
                     MessageBox.Show("I can't delete the selected file", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                catch (DirectoryNotFoundException)
-                {
+              }
+              catch (DirectoryNotFoundException)
+              {
                     MessageBox.Show("I can not delete the selected directory", "Directory not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                catch (UnauthorizedAccessException)
-                {
+              }
+              catch (UnauthorizedAccessException)
+              {
                     MessageBox.Show("You do not have access to delete the selected file", "Access denied", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                catch (IOException)
-                {
+              }
+              catch (IOException)
+              {
                     MessageBox.Show("You do not have access to delete the selected directory", "Access denied", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+              }
         }
 
         private void Paste(string SelectedPath)
@@ -263,102 +337,29 @@ namespace WindowsPE
                 LoadFromSelectedDirectory(new DirectoryInfo(backup).Parent.FullName);
             }
             catch { Forward.RemoveAt(Forward.LastIndexOf(backup)); }
-            
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            if (Forward.Count > 0)
-            {
-                if(!Forward[Forward.Count - 1].StartsWith("Search://"))
-                {
-                    LoadFromSelectedDirectory(Forward[Forward.Count - 1]);
-                    Forward.RemoveAt(Forward.Count - 1);
-                }
-            }
-        }
-
-        string FileSizeConversion(long size)
-        {
-             if(size < 1024) return size.ToString() + " B";
-             return (size / 1024).ToString() + " KB";
-        }
-
-        public void SetupItem(FileInfo fileInfo)
-        {
-            DataGridViewImageCell nameCell = new DataGridViewImageCell() { ValueIsIcon = true };
-            if(fileInfo.Extension == ".dll") nameCell.Value = icons[72];       
-            else 
-            {
-                try
-                { 
-                    nameCell.Value = ExternalMethods.GetSmallIcon(fileInfo.FullName);
-                }
-                catch
-                {
-                    nameCell.Value  = icons[0];
-                }
-            }
-            ContentGrid.Rows.Add(nameCell.Value, fileInfo.Name, fileInfo.LastWriteTime.ToString(), FileSizeConversion(fileInfo.Length)); 
-        }
-
-        public void Search(string filename, string data)
-        {
-            Location.Text = "Search://" + filename;
-            DirectoryList = new DirectoryInfo(data);
-            FileInfo[] files = DirectoryList.GetFiles();
-            DirectoryInfo[] directories = DirectoryList.GetDirectories();
-            
-            foreach (FileInfo fileInfo in files)
-            {
-                if(fileInfo.Name.ToLower().Contains(filename.ToLower())){
-                    SetupItem(fileInfo);
-                }
-            }
-
-            foreach (DirectoryInfo directory in directories)
-            {
-                Search(filename, directory.FullName);
-            }
-        }
-
-        private void SearchBar_Click(object sender, EventArgs e) => SearchBar.Text = "";
-
-        private void SearchBar_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            string data = Location.Text;
-            if(SearchBar.Text != "" && e.KeyChar == (char)13)
-            {
-                ContentGrid.Rows.Clear();
-                try
-                {
-                   Search(SearchBar.Text, data);
-                   backup = data;
-                }
-                catch(Exception){}
-            }
-            
-        }
-
-        private void ContentGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) => MovingNextDirectory();
+        private void ContentGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) => MovingNextDirectory(Location.Text + "\\" + ContentGrid.SelectedRows[0].Cells[1].Value.ToString());
 
         private void ContentGrid_MouseClick(object sender, MouseEventArgs e)
         {
-           if (e.Button == MouseButtons.Right) 
-           {
+            if (e.Button == MouseButtons.Right) {
+
                 ContextMenu contextmenu = new ContextMenu();
-                string SelectedPath = Location.Text + "\\" + ContentGrid.SelectedRows[0].Cells[1].Value.ToString();
-                contextmenu.MenuItems.Add(new MenuItem("Open", (object senderOpen, EventArgs eventArgs_open) => MovingNextDirectory()));
-                contextmenu.MenuItems.Add(new MenuItem("-"));
-                contextmenu.MenuItems.Add(new MenuItem("Copy", (object SenderCopy, EventArgs eventArgs_copy) => CopyOperation(SelectedPath, false)));
-                contextmenu.MenuItems.Add(new MenuItem("Move", (object SenderMove, EventArgs eventArgs_move) => CopyOperation(SelectedPath, true)));
-                if(Clipboard.ContainsFileDropList())
                 {
-                    contextmenu.MenuItems.Add(new MenuItem("Paste", (object SenderPaste, EventArgs eventArgs_move) => Paste(SelectedPath)));
+                    string SelectedPath = Location.Text + "\\" + ContentGrid.SelectedRows[0].Cells[1].Value.ToString();
+                    contextmenu.MenuItems.Add(new MenuItem("Open", (object senderOpen, EventArgs eventArgs_open) => MovingNextDirectory(SelectedPath)));
+                    contextmenu.MenuItems.Add(new MenuItem("-"));
+                    contextmenu.MenuItems.Add(new MenuItem("Copy", (object SenderCopy, EventArgs eventArgs_copy) => CopyOperation(SelectedPath, false)));
+                    contextmenu.MenuItems.Add(new MenuItem("Move", (object SenderMove, EventArgs eventArgs_move) => CopyOperation(SelectedPath, true)));
+                    if (Clipboard.ContainsFileDropList())
+                    {
+                        contextmenu.MenuItems.Add(new MenuItem("Paste", (object SenderPaste, EventArgs eventArgs_move) => Paste(SelectedPath)));
+                    }
+                    contextmenu.MenuItems.Add(new MenuItem("Delete", (object SenderDelete, EventArgs eventArgs_delete) => Delete(SelectedPath)));
+                    contextmenu.MenuItems.Add(new MenuItem("Rename", (object SenderRename, EventArgs eventArgs_rename) => Rename(SelectedPath)));
+                    contextmenu.Show(this.ContentGrid, new Point(e.X, e.Y + 10));
                 }
-                contextmenu.MenuItems.Add(new MenuItem("Delete", (object SenderDelete, EventArgs eventArgs_delete) => Delete(SelectedPath)));
-                contextmenu.MenuItems.Add(new MenuItem("Rename", (object SenderRename, EventArgs eventArgs_rename) => Rename(SelectedPath)));
-                contextmenu.Show(this, new Point(e.X, e.Y + 10));
             }
         }
 
@@ -370,11 +371,6 @@ namespace WindowsPE
                 ContentGrid.Rows[e.RowIndex].Selected = true;
                 ContentGrid.Focus();   
             }
-        }
-
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-
         }
     }
 }

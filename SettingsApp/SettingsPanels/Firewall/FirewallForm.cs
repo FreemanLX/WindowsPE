@@ -11,7 +11,7 @@ namespace WindowsPE.Settings
     public partial class FirewallForm : UserControl
     {
 
-        Firewall.FirewallRules outfirewallRules, infirewallRules;
+        FirewallRules outfirewallRules, infirewallRules;
 
         public FirewallForm()
         {
@@ -21,7 +21,7 @@ namespace WindowsPE.Settings
             infirewallRules = new Firewall.FirewallRules("Inbound rules") {Dock = DockStyle.Fill };
         }
 
-        public unsafe void GetFirewallData()
+        public unsafe void GetFirewallData() 
         {
             ExternalStructures.UnmanagedFirewallData* data;
             if (ExternalMethods.FirewallApi.GetFirewallData(&data, out int size) == 1)
@@ -61,14 +61,6 @@ namespace WindowsPE.Settings
             
             else infirewallRules.insertFirewallData(name, profile, enabled, action, program, localAddress, remoteAddress, protocol, localPort, remotePort);       
          }
-
-        private void SetFirewallStatus_Click(object sender, EventArgs e)
-        {
-            ChangeFirewallStatus changeFirewallStatus = new ChangeFirewallStatus();
-            changeFirewallStatus.ShowDialog();
-            CheckFirewall();
-        }
-
         /// <summary>
         /// Checks the status of firewall
         /// </summary>
@@ -78,10 +70,14 @@ namespace WindowsPE.Settings
             int firewallStatusPrivate = ExternalMethods.FirewallApi.CheckFirewall(ExternalStructures.NET_FW_PROFILE_TYPE2.NET_FW_PROFILE2_PRIVATE);
             int firewallStatusPublic = ExternalMethods.FirewallApi.CheckFirewall(ExternalStructures.NET_FW_PROFILE_TYPE2.NET_FW_PROFILE2_PUBLIC);
 
-            FirewallStatus privateFirewall = new FirewallStatus("Private networks", firewallStatusPrivate == 1);
-            privateFirewall.Location = new Point(statusFirewallLabel.Location.X, statusFirewallLabel.Location.Y + statusFirewallLabel.Size.Height + 10);
-            FirewallStatus publicFirewall = new FirewallStatus("Public networks", firewallStatusPrivate == 1);
-            publicFirewall.Location = new Point(statusFirewallLabel.Location.X, privateFirewall.Location.Y + privateFirewall.Size.Height + 10);
+            FirewallStatus privateFirewall = new FirewallStatus("Private networks", firewallStatusPrivate == 1)
+            {
+                Location = new Point(statusFirewallLabel.Location.X, 0 + statusFirewallLabel.Size.Height + 5)
+            };
+            FirewallStatus publicFirewall = new FirewallStatus("Public networks", firewallStatusPrivate == 1)
+            {
+                Location = new Point(statusFirewallLabel.Location.X, privateFirewall.Location.Y + privateFirewall.Size.Height + 10)
+            };
             firewallContainer.Controls.Add(privateFirewall);
             firewallContainer.Controls.Add(publicFirewall);
         }
@@ -91,15 +87,11 @@ namespace WindowsPE.Settings
         /// </summary>
         void LoadFirewallData()
         {
-            infirewallRules.ClearTable();
-            outfirewallRules.ClearTable();
-       //     GetFirewallData();
+            firewallContainer.Controls.Clear();
             CheckFirewall();
+            Refresh();
         }
 
-        /// <summary>
-        /// Adds a new firewall rule
-        /// </summary>
         private void firewallAddNewRule_Click(object sender, EventArgs e)
         {
             AddNewRuleFirewall addNewRuleFirewall = new AddNewRuleFirewall();
@@ -107,24 +99,15 @@ namespace WindowsPE.Settings
             LoadFirewallData();
         }
 
-        private void firewallRefresh_Click(object sender, EventArgs e) => LoadFirewallData();
-
-        private void optionsLayout_Paint(object sender, PaintEventArgs e)
+        private void SetFirewallStatus_Click_1(object sender, EventArgs e)
         {
-
-        }
-
-        private void lineDrawing_Click(object sender, EventArgs e)
-        {
-
+            ChangeFirewallStatus changeFirewallStatus = new ChangeFirewallStatus();
+            changeFirewallStatus.ShowDialog();
+            LoadFirewallData();
         }
 
         private void FirewallForm_Load(object sender, EventArgs e) {
-        //    firewallLayoutPanel.SuspendLayout();
-         //   firewallLayoutPanel.Controls.Add(infirewallRules, 0, 0);   
-         //   firewallLayoutPanel.Controls.Add(outfirewallRules, 0, 1);  
             LoadFirewallData();
-          //  firewallLayoutPanel.ResumeLayout();
         }
 
     }

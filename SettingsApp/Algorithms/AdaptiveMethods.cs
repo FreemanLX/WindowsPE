@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 using System.Linq;
 using System.Collections.Generic;
 using WindowsPE.Algorithms;
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace WindowsPE
 {
@@ -29,33 +31,64 @@ namespace WindowsPE
             return 0;
         }
 
+        public struct ScreenSettings
+        {
+            public bool PrimaryScreen;
+            public bool DisabledScreen;
+            public int ScreenIndex;
+
+            //current screen resolution
+            public string CurrentScreenResolution;
+            public string[] ScreenResolutions; //must be initialized - will be checked
+
+            public Size Bounds;
+        }
+
+        public static ScreenSettings[] screens;
+
         public static void GetScreenResolutions()
         {
             unsafe 
             {
                 int* indexes = null;
 
-                if(ExternalMethods.ScreenApi.GetAvailableScreenResolutionIndex(&indexes, out int sizePtr))
+                if(ExternalMethods.ScreenApi.GetAvailableScreens(&indexes, out int sizePtr))
                 {
-                         int[] displayIndex = new int[sizePtr];
-                         Data.resolutions = new Dictionary<int, string[]>();
-                         for(int i = 0; i<sizePtr; i++, indexes++){
-                              displayIndex[i] = *indexes;
-                         }
-                         Data.DisplayIndex = displayIndex;
-                         foreach(int index in displayIndex)
-                         {
-                            string[] array = null;
-                            if (ExternalMethods.ScreenApi.EnumScreenResolutionU(index, out IntPtr ptr, out int size))
+                       int[] displayIndex = new int[sizePtr];
+
+                       screens = new ScreenSettings[sizePtr];
+                       for (int i = 0; i < sizePtr; i++, indexes++)
+                       {
+                            screens[i].ScreenIndex = *indexes;
+                            
+                            if(ExternalMethods.ScreenApi.CheckScreenIsDisabled(screens[i].ScreenIndex, out int state) && state == 1)
                             {
-                                 IntPtr2Array(ptr, size, out array);
-                                 array = array.Distinct().ToArray();
+                                screens[i].DisabledScreen = true;
                             }
-                            QuickSort<string> qs = new QuickSort<string>(array, CustomCompare);
-                            qs.Sort();
-                            Data.resolutions[index] = qs.getArrayList();
-                        }
-                        
+
+                            if(ExternalMethods.ScreenApi.GetScreenCurrentResolution(screens[i].ScreenIndex, out IntPtr currentResPtr))
+                            {
+                                 screens[i].CurrentScreenResolution = Marshal.PtrToStringAnsi(currentResPtr);
+                                 string[] split = screens[i].CurrentScreenResolution.ToString().Split('x');
+                                 screens[i].Bounds = new Size(int.Parse(split[0]), int.Parse(split[1]));
+                            }
+
+                            if (ExternalMethods.ScreenApi.EnumScreenResolutionU(screens[i].ScreenIndex, out IntPtr listResPtr, out int size))
+                            {
+                                IntPtr2Array(listResPtr, size, out screens[i].ScreenResolutions);
+                                screens[i].ScreenResolutions = screens[i].ScreenResolutions.Distinct().ToArray();
+                                QuickSort<string> qs = new QuickSort<string>(screens[i].ScreenResolutions, CustomCompare);
+                                qs.Sort();
+                                if (screens[i].DisabledScreen)
+                                {
+                                    screens[i].CurrentScreenResolution = screens[i].ScreenResolutions[screens[i].ScreenResolutions.Length - 1];
+                                    string[] split = screens[i].CurrentScreenResolution.ToString().Split('x');
+                                    screens[i].Bounds = new Size(int.Parse(split[0]), int.Parse(split[1]));
+                                    screens[i].ScreenResolutions = null;
+                                }
+                            }
+                       }
+                    
                 }
             }
         }

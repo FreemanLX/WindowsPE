@@ -42,6 +42,7 @@
             // 
             // networkLayout
             // 
+            this.networkLayout.BackColor = System.Drawing.Color.White;
             this.networkLayout.ColumnCount = 1;
             this.networkLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.networkLayout.Controls.Add(this.headerPanel, 0, 0);
@@ -60,6 +61,7 @@
             // 
             // headerPanel
             // 
+            this.headerPanel.BackColor = System.Drawing.Color.White;
             this.headerPanel.Controls.Add(this.HeaderText);
             this.headerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.headerPanel.Location = new System.Drawing.Point(0, 0);

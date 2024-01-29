@@ -101,7 +101,19 @@
     <Compile Include="Algorithms\ExternalStructures.cs" />
     <Compile Include="Algorithms\Pair.cs" />
     <Compile Include="Algorithms\QuickSort.cs" />
+    <Compile Include="backup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="backup.Designer.cs">
+      <DependentUpon>backup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Data\Data.cs" />
+    <Compile Include="SettingsPanels\ControlItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\ControlItem.Designer.cs">
+      <DependentUpon>ControlItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="SettingsPanels\Default form.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -121,7 +133,7 @@
       <DependentUpon>DisplayForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SettingsPanels\Share\FilesharingForm.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="SettingsPanels\Share\FilesharingForm.Designer.cs">
       <DependentUpon>FilesharingForm.cs</DependentUpon>
@@ -265,12 +277,6 @@
     <Compile Include="SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SettingsPanels\Share\ShareDataLayout.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SettingsPanels\Share\ShareDataLayout.Designer.cs">
-      <DependentUpon>ShareDataLayout.cs</DependentUpon>
-    </Compile>
     <Compile Include="SettingsPanels\Share\ShareData.cs" />
     <Compile Include="SettingsPanels\Share\ShareWizard_Confirmation.cs">
       <SubType>UserControl</SubType>
@@ -290,6 +296,12 @@
     <Compile Include="SettingsPanels\Share\ShareWizard_Name.Designer.cs">
       <DependentUpon>ShareWizard_Name.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="backup.resx">
+      <DependentUpon>backup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\ControlItem.resx">
+      <DependentUpon>ControlItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SettingsPanels\Default form.resx">
       <DependentUpon>Default form.cs</DependentUpon>
     </EmbeddedResource>
@@ -373,12 +385,10 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SettingsPanels\Share\ShareDataLayout.resx">
-      <DependentUpon>ShareDataLayout.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsPanels\Share\ShareWizard_Confirmation.resx">
       <DependentUpon>ShareWizard_Confirmation.cs</DependentUpon>
@@ -416,6 +426,139 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CP010.ico" />
+    <None Include="Resources\Def001.ico" />
+    <None Include="Resources\Display016.ico" />
+    <None Include="Resources\Display065.ico" />
+    <None Include="Resources\Display028.ico" />
+    <None Include="Resources\Display037.ico" />
+    <None Include="Resources\Display038.ico" />
+    <None Include="Resources\CP096.ico" />
+    <None Include="Resources\CP095.ico" />
+    <None Include="Resources\CP094.ico" />
+    <None Include="Resources\CP093.ico" />
+    <None Include="Resources\CP092.ico" />
+    <None Include="Resources\CP091.ico" />
+    <None Include="Resources\CP090.ico" />
+    <None Include="Resources\CP089.ico" />
+    <None Include="Resources\CP088.ico" />
+    <None Include="Resources\CP087.ico" />
+    <None Include="Resources\CP086.ico" />
+    <None Include="Resources\CP085.ico" />
+    <None Include="Resources\CP084.ico" />
+    <None Include="Resources\CP083.ico" />
+    <None Include="Resources\CP082.ico" />
+    <None Include="Resources\CP081.ico" />
+    <None Include="Resources\CP080.ico" />
+    <None Include="Resources\CP079.ico" />
+    <None Include="Resources\CP078.ico" />
+    <None Include="Resources\CP077.ico" />
+    <None Include="Resources\CP076.ico" />
+    <None Include="Resources\CP075.ico" />
+    <None Include="Resources\CP074.ico" />
+    <None Include="Resources\CP073.ico" />
+    <None Include="Resources\CP072.ico" />
+    <None Include="Resources\CP071.ico" />
+    <None Include="Resources\CP070.ico" />
+    <None Include="Resources\CP069.ico" />
+    <None Include="Resources\CP068.ico" />
+    <None Include="Resources\CP067.ico" />
+    <None Include="Resources\CP066.ico" />
+    <None Include="Resources\CP065.ico" />
+    <None Include="Resources\CP064.ico" />
+    <None Include="Resources\CP063.ico" />
+    <None Include="Resources\CP062.ico" />
+    <None Include="Resources\CP061.ico" />
+    <None Include="Resources\CP060.ico" />
+    <None Include="Resources\CP059.ico" />
+    <None Include="Resources\CP058.ico" />
+    <None Include="Resources\CP057.ico" />
+    <None Include="Resources\CP056.ico" />
+    <None Include="Resources\CP055.ico" />
+    <None Include="Resources\CP054.ico" />
+    <None Include="Resources\CP053.ico" />
+    <None Include="Resources\CP052.ico" />
+    <None Include="Resources\CP051.ico" />
+    <None Include="Resources\CP050.ico" />
+    <None Include="Resources\CP049.ico" />
+    <None Include="Resources\CP048.ico" />
+    <None Include="Resources\CP047.ico" />
+    <None Include="Resources\CP046.ico" />
+    <None Include="Resources\CP045.ico" />
+    <None Include="Resources\CP044.ico" />
+    <None Include="Resources\CP043.ico" />
+    <None Include="Resources\CP042.ico" />
+    <None Include="Resources\CP041.ico" />
+    <None Include="Resources\CP040.ico" />
+    <None Include="Resources\CP039.ico" />
+    <None Include="Resources\CP038.ico" />
+    <None Include="Resources\CP037.ico" />
+    <None Include="Resources\CP036.ico" />
+    <None Include="Resources\CP035.ico" />
+    <None Include="Resources\CP034.ico" />
+    <None Include="Resources\CP033.ico" />
+    <None Include="Resources\CP032.ico" />
+    <None Include="Resources\CP031.ico" />
+    <None Include="Resources\CP030.ico" />
+    <None Include="Resources\CP029.ico" />
+    <None Include="Resources\CP028.ico" />
+    <None Include="Resources\CP027.ico" />
+    <None Include="Resources\CP026.ico" />
+    <None Include="Resources\CP025.ico" />
+    <None Include="Resources\CP024.ico" />
+    <None Include="Resources\CP023.ico" />
+    <None Include="Resources\CP022.ico" />
+    <None Include="Resources\CP021.ico" />
+    <None Include="Resources\CP020.ico" />
+    <None Include="Resources\CP019.ico" />
+    <None Include="Resources\CP018.ico" />
+    <None Include="Resources\CP017.ico" />
+    <None Include="Resources\CP016.ico" />
+    <None Include="Resources\CP015.ico" />
+    <None Include="Resources\CP014.ico" />
+    <None Include="Resources\CP013.ico" />
+    <None Include="Resources\CP012.ico" />
+    <None Include="Resources\CP011.ico" />
+    <None Include="Resources\CP010.ico" />
+    <None Include="Resources\CP009.ico" />
+    <None Include="Resources\CP008.ico" />
+    <None Include="Resources\CP007.ico" />
+    <None Include="Resources\CP006.ico" />
+    <None Include="Resources\CP005.ico" />
+    <None Include="Resources\CP004.ico" />
+    <None Include="Resources\CP003.ico" />
+    <None Include="Resources\CP002.ico" />
+    <None Include="Resources\CP001.ico" />
+    <None Include="Resources\User Accounts.png" />
+    <None Include="Resources\System.png" />
+    <None Include="Resources\Speech.png" />
+    <None Include="Resources\Sounds-and-Audio-Devices.png" />
+    <None Include="Resources\Regional and Language Options.png" />
+    <None Include="Resources\Phone and Modem Options.png" />
+    <None Include="Resources\Nero BurnRights.png" />
+    <None Include="Resources\Mouse.png" />
+    <None Include="Resources\Keyboard.png" />
+    <None Include="Resources\Internet Options.png" />
+    <None Include="Resources\Game Controllers.png" />
+    <None Include="Resources\Display.png" />
+    <None Include="Resources\Date and Time.png" />
+    <None Include="Resources\Clear Type Tuning.png" />
+    <None Include="Resources\Automatic Updates.png" />
+    <None Include="Resources\Adobe-Gamma.png" />
+    <None Include="Resources\Add Remove Programs.png" />
+    <None Include="Resources\Add Hardware.png" />
+    <None Include="Resources\Accessibility.png" />
+    <None Include="Resources\shell32_4.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="NETWORKLIST">
+      <Guid>{DCB00D01-570F-4A9B-8D69-199FDBA5723B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

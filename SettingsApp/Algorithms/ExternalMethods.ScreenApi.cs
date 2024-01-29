@@ -14,8 +14,14 @@ namespace WindowsPE.Algorithms
              public static extern bool EnumScreenResolutionU(int display, out IntPtr unmanagedStringsArray, out int size);    
             
              [DllImport("ShellCore.dll", CallingConvention = CallingConvention.Cdecl)]
-             public static extern bool GetAvailableScreenResolutionIndex(int** IndexList, out int size);
-         }
+             public static extern bool GetAvailableScreens(int** IndexList, out int size);
+
+             [DllImport("ShellCore.dll", CallingConvention = CallingConvention.Cdecl)]
+             public static extern bool CheckScreenIsDisabled(int display, out int output);
+
+             [DllImport("ShellCore.dll", CallingConvention = CallingConvention.Cdecl)]
+             public static extern bool GetScreenCurrentResolution(int display, out IntPtr charArray);
+        }
 
     }
 }

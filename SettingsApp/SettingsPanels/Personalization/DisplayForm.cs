@@ -16,40 +16,38 @@ namespace WindowsPE.Settings
 
         int GeneralDisplayIndex = 0;
         Dictionary<int, Panel> displayIndexes;
-        Screen[] screens = null;
         private void DisplayForm_Load(object sender, EventArgs e)
         {
-            screens = Screen.AllScreens;
-            Panel[] panels = new Panel[screens.Length];
+            
+            Panel[] panels = new Panel[AdaptiveMethods.screens.Length];
             displayIndexes = new Dictionary<int, Panel>();
-            identifyBtn.BackColor = Data.color;
-            detectBtn.BackColor = Data.color;
             int screensWidth = 0;
             displaysFormContainers.ColumnStyles.Clear();
             displaysFormContainers.RowStyles.Clear();
             displaysFormContainers.RowCount = 3;
-            displaysFormContainers.ColumnCount = screens.Length + 2;
+            displaysFormContainers.ColumnCount = AdaptiveMethods.screens.Length + 2;
             displaysFormContainers.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
             displaysFormContainers.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
             displaysFormContainers.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            int percentage = (screens.Length == 1) ? 35 : 25;
+            int percentage = (AdaptiveMethods.screens.Length == 1) ? 35 : 25;
             displaysFormContainers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, percentage)); //the left margin
-            for(int i = 0; i<screens.Length; i++)
-               displaysFormContainers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100 / screens.Length));
+            for (int i = 0; i < AdaptiveMethods.screens.Length; i++)
+                displaysFormContainers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, (float) (100.0 / AdaptiveMethods.screens.Length * (AdaptiveMethods.screens[i].Bounds.Width / 1000.0 + 1))));
             displaysFormContainers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, percentage)); //the right margin
             
-            for(int i = 0; i<screens.Length; i++)
+            for(int i = 0; i < AdaptiveMethods.screens.Length; i++)
             {
                 panels[i] = new Panel
                 {
-                    Dock = DockStyle.Fill,
+                    Height = (int)(AdaptiveMethods.screens[i].Bounds.Height * 100.0 / AdaptiveMethods.screens.Length),
+                    Width = (int)(AdaptiveMethods.screens[i].Bounds.Width  * 100.0 / AdaptiveMethods.screens.Length),
                     BorderStyle = BorderStyle.FixedSingle
                 };
                 screensWidth += panels[i].Size.Width + 3;
                 Label displayId = new Label
                 {
                     Font = new Font("Segoe UI", 50, FontStyle.Regular),
-                    Text = i.ToString(),
+                    Text = (i + 1).ToString(),
                     ForeColor = Color.Black,
                 };
                 displayId.Size = new Size(Size.Width, 100);
@@ -57,13 +55,13 @@ namespace WindowsPE.Settings
                 displayId.TextAlign = ContentAlignment.MiddleCenter;
                 displayId.MouseClick += new MouseEventHandler((MouseSender, MouseEvent) => GeneralDisplayScreenResolution(MouseSender, MouseEvent));
                 panels[i].Controls.Add(displayId);
-                if(screens[i] == Screen.PrimaryScreen)
+                if(AdaptiveMethods.screens[i].PrimaryScreen)
                 {
                     panels[i].BackColor = Data.color;
                     GeneralDisplayIndex = i;
                     displayId.ForeColor = Color.White;
-                    ResolutionComboBox.Text = screens[i].Bounds.Width.ToString() + " x " + screens[i].Bounds.Height.ToString();
-                    ResolutionComboBox.Items.AddRange(Data.resolutions[Data.DisplayIndex[i]]);
+                    ResolutionComboBox.Text = AdaptiveMethods.screens[i].CurrentScreenResolution;
+                    ResolutionComboBox.Items.AddRange(AdaptiveMethods.screens[i].ScreenResolutions);
                 }
                 displayIndexes[i] = panels[i];
                 displaysFormContainers.Controls.Add(panels[i], i + 1, 1);
@@ -83,10 +81,16 @@ namespace WindowsPE.Settings
              displayIndexes[GeneralDisplayIndex].Controls[0].ForeColor = Color.Black;
              GeneralDisplayIndex = DisplayIndex;
              displayIndexes[DisplayIndex].BackColor = Data.color;
-             ResolutionComboBox.Text = screens[DisplayIndex].Bounds.Width.ToString() + " x " + screens[DisplayIndex].Bounds.Height.ToString();
-             int index = Data.DisplayIndex[DisplayIndex];
+             if (AdaptiveMethods.screens[DisplayIndex].DisabledScreen)
+             {
+                ResolutionComboBox.Text = "Disabled";
+                ResolutionComboBox.Enabled = false;
+                return;
+             }
+             ResolutionComboBox.Enabled = true;
+             ResolutionComboBox.Text = AdaptiveMethods.screens[DisplayIndex].CurrentScreenResolution;
              displayIndexes[GeneralDisplayIndex].Controls[0].ForeColor = Color.White;
-             ResolutionComboBox.Items.AddRange(Data.resolutions[index]);
+             ResolutionComboBox.Items.AddRange(AdaptiveMethods.screens[DisplayIndex].ScreenResolutions);
         }
 
         private void DisplayHeaderLayout_Paint(object sender, PaintEventArgs e)

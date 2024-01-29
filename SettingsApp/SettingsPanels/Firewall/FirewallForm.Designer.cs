@@ -29,19 +29,20 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
             this.optionsLayout = new System.Windows.Forms.Panel();
+            this.lineDrawing = new System.Windows.Forms.Label();
+            this.optionsLabel = new System.Windows.Forms.Label();
             this.SetFirewallStatus = new System.Windows.Forms.Label();
             this.firewallRefresh = new System.Windows.Forms.Label();
             this.firewallAddNewRule = new System.Windows.Forms.Label();
             this.firewallContainer = new System.Windows.Forms.Panel();
-            this.lineDrawing = new System.Windows.Forms.Label();
-            this.optionsLabel = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.statusFirewallLabel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.optionsLayout.SuspendLayout();
-            this.firewallContainer.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -49,18 +50,33 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.optionsLayout, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.firewallContainer, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.optionsLayout, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.firewallContainer, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(934, 535);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.White;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semilight", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.label1.Location = new System.Drawing.Point(24, 24);
+            this.label1.Margin = new System.Windows.Forms.Padding(24, 24, 3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(232, 24);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Windows Defender Firewall";
             // 
             // optionsLayout
             // 
@@ -76,6 +92,25 @@
             this.optionsLayout.Size = new System.Drawing.Size(928, 200);
             this.optionsLayout.TabIndex = 2;
             // 
+            // lineDrawing
+            // 
+            this.lineDrawing.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lineDrawing.Font = new System.Drawing.Font("Microsoft Sans Serif", 2.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lineDrawing.Location = new System.Drawing.Point(201, 30);
+            this.lineDrawing.Name = "lineDrawing";
+            this.lineDrawing.Size = new System.Drawing.Size(500, 2);
+            this.lineDrawing.TabIndex = 40;
+            // 
+            // optionsLabel
+            // 
+            this.optionsLabel.AutoSize = true;
+            this.optionsLabel.Font = new System.Drawing.Font("Segoe UI Semilight", 9.75F);
+            this.optionsLabel.Location = new System.Drawing.Point(26, 20);
+            this.optionsLabel.Name = "optionsLabel";
+            this.optionsLabel.Size = new System.Drawing.Size(169, 17);
+            this.optionsLabel.TabIndex = 41;
+            this.optionsLabel.Text = "Change your firewall settings";
+            // 
             // SetFirewallStatus
             // 
             this.SetFirewallStatus.AutoSize = true;
@@ -88,6 +123,7 @@
             this.SetFirewallStatus.Size = new System.Drawing.Size(202, 19);
             this.SetFirewallStatus.TabIndex = 4;
             this.SetFirewallStatus.Text = "Turn Windows Firewall on or off";
+            this.SetFirewallStatus.Click += new System.EventHandler(this.SetFirewallStatus_Click_1);
             // 
             // firewallRefresh
             // 
@@ -117,65 +153,42 @@
             // 
             // firewallContainer
             // 
-            this.firewallContainer.Controls.Add(this.label2);
-            this.firewallContainer.Controls.Add(this.statusFirewallLabel);
             this.firewallContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.firewallContainer.Location = new System.Drawing.Point(3, 51);
+            this.firewallContainer.Location = new System.Drawing.Point(0, 98);
+            this.firewallContainer.Margin = new System.Windows.Forms.Padding(0);
             this.firewallContainer.Name = "firewallContainer";
-            this.firewallContainer.Size = new System.Drawing.Size(928, 281);
+            this.firewallContainer.Size = new System.Drawing.Size(934, 237);
             this.firewallContainer.TabIndex = 3;
             // 
-            // lineDrawing
+            // panel1
             // 
-            this.lineDrawing.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lineDrawing.Font = new System.Drawing.Font("Microsoft Sans Serif", 2.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lineDrawing.Location = new System.Drawing.Point(201, 30);
-            this.lineDrawing.Name = "lineDrawing";
-            this.lineDrawing.Size = new System.Drawing.Size(500, 2);
-            this.lineDrawing.TabIndex = 40;
-            this.lineDrawing.Click += new System.EventHandler(this.lineDrawing_Click);
-            // 
-            // optionsLabel
-            // 
-            this.optionsLabel.AutoSize = true;
-            this.optionsLabel.Font = new System.Drawing.Font("Segoe UI Semilight", 9.75F);
-            this.optionsLabel.Location = new System.Drawing.Point(26, 20);
-            this.optionsLabel.Name = "optionsLabel";
-            this.optionsLabel.Size = new System.Drawing.Size(169, 17);
-            this.optionsLabel.TabIndex = 41;
-            this.optionsLabel.Text = "Change your firewall settings";
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.statusFirewallLabel);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 48);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(934, 50);
+            this.panel1.TabIndex = 5;
             // 
             // label2
             // 
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 2.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(175, 30);
+            this.label2.Location = new System.Drawing.Point(186, 43);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(518, 2);
-            this.label2.TabIndex = 36;
+            this.label2.TabIndex = 38;
             // 
             // statusFirewallLabel
             // 
             this.statusFirewallLabel.AutoSize = true;
             this.statusFirewallLabel.Font = new System.Drawing.Font("Segoe UI Semilight", 9.75F);
-            this.statusFirewallLabel.Location = new System.Drawing.Point(26, 20);
+            this.statusFirewallLabel.Location = new System.Drawing.Point(26, 33);
             this.statusFirewallLabel.Name = "statusFirewallLabel";
             this.statusFirewallLabel.Size = new System.Drawing.Size(143, 17);
-            this.statusFirewallLabel.TabIndex = 35;
+            this.statusFirewallLabel.TabIndex = 37;
             this.statusFirewallLabel.Text = "View your firewall status";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.White;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semilight", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label1.Location = new System.Drawing.Point(24, 24);
-            this.label1.Margin = new System.Windows.Forms.Padding(24, 24, 3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(216, 24);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Windows firewall settings";
             // 
             // FirewallForm
             // 
@@ -190,8 +203,8 @@
             this.tableLayoutPanel1.PerformLayout();
             this.optionsLayout.ResumeLayout(false);
             this.optionsLayout.PerformLayout();
-            this.firewallContainer.ResumeLayout(false);
-            this.firewallContainer.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -205,8 +218,9 @@
         private System.Windows.Forms.Panel firewallContainer;
         private System.Windows.Forms.Label lineDrawing;
         private System.Windows.Forms.Label optionsLabel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label statusFirewallLabel;
-        private System.Windows.Forms.Label label1;
     }
 }

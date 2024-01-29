@@ -10,8 +10,10 @@ namespace WindowsPE
         public ChangeFirewallStatus()
         {
             InitializeComponent();
-            publicCheckBox = new ProfileCheckBox("Public");
-            privateCheckBox = new ProfileCheckBox("Private");
+            int firewallStatusPrivate = ExternalMethods.FirewallApi.CheckFirewall(ExternalStructures.NET_FW_PROFILE_TYPE2.NET_FW_PROFILE2_PRIVATE);
+            int firewallStatusPublic = ExternalMethods.FirewallApi.CheckFirewall(ExternalStructures.NET_FW_PROFILE_TYPE2.NET_FW_PROFILE2_PUBLIC);
+            publicCheckBox = new ProfileCheckBox("Public network settings", firewallStatusPublic == 1);
+            privateCheckBox = new ProfileCheckBox("Private network settings", firewallStatusPrivate == 1);
         }
 
         private void Cancel_Click(object sender, EventArgs e) => this.Close();

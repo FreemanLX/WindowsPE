@@ -1,6 +1,6 @@
 ﻿namespace WindowsPE
 {
-    partial class File_explorer
+    partial class FileExplorer
     {
         /// <summary>
         /// Required designer variable.
@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(File_explorer));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileExplorer));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Header = new System.Windows.Forms.TableLayoutPanel();
             this.tableHeaderLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.button2 = new System.Windows.Forms.Button();
+            this.forwardBtn = new System.Windows.Forms.Button();
             this.Location = new System.Windows.Forms.TextBox();
             this.SearchBar = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.backwardBtn = new System.Windows.Forms.Button();
             this.tableContentLayout = new System.Windows.Forms.TableLayoutPanel();
             this.ContentGrid = new System.Windows.Forms.DataGridView();
             this.IconGrd = new System.Windows.Forms.DataGridViewImageColumn();
@@ -70,9 +70,8 @@
             this.Header.Location = new System.Drawing.Point(0, 0);
             this.Header.Name = "Header";
             this.Header.RowCount = 2;
-            this.Header.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.Header.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.Header.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.Header.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.Header.Size = new System.Drawing.Size(1008, 729);
             this.Header.TabIndex = 2;
             // 
@@ -86,85 +85,85 @@
             this.tableHeaderLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableHeaderLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableHeaderLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 288F));
-            this.tableHeaderLayout.Controls.Add(this.button2, 1, 0);
+            this.tableHeaderLayout.Controls.Add(this.forwardBtn, 1, 0);
             this.tableHeaderLayout.Controls.Add(this.Location, 2, 0);
             this.tableHeaderLayout.Controls.Add(this.SearchBar, 3, 0);
-            this.tableHeaderLayout.Controls.Add(this.button1, 0, 0);
+            this.tableHeaderLayout.Controls.Add(this.backwardBtn, 0, 0);
             this.tableHeaderLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableHeaderLayout.Location = new System.Drawing.Point(3, 3);
             this.tableHeaderLayout.Name = "tableHeaderLayout";
             this.tableHeaderLayout.RowCount = 1;
             this.tableHeaderLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableHeaderLayout.Size = new System.Drawing.Size(1002, 34);
+            this.tableHeaderLayout.Size = new System.Drawing.Size(1002, 29);
             this.tableHeaderLayout.TabIndex = 0;
             // 
-            // button2
+            // forwardBtn
             // 
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(43, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(34, 28);
-            this.button2.TabIndex = 2;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.forwardBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("forwardBtn.BackgroundImage")));
+            this.forwardBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.forwardBtn.FlatAppearance.BorderSize = 0;
+            this.forwardBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.forwardBtn.ForeColor = System.Drawing.Color.Black;
+            this.forwardBtn.Location = new System.Drawing.Point(43, 3);
+            this.forwardBtn.Name = "forwardBtn";
+            this.forwardBtn.Size = new System.Drawing.Size(34, 23);
+            this.forwardBtn.TabIndex = 2;
+            this.forwardBtn.UseVisualStyleBackColor = true;
+            this.forwardBtn.Click += new System.EventHandler(this.BackwardButton_Click);
             // 
             // Location
             // 
             this.Location.BackColor = System.Drawing.Color.White;
             this.Location.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Location.Font = new System.Drawing.Font("Segoe UI Semilight", 12F);
+            this.Location.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
             this.Location.ForeColor = System.Drawing.Color.Black;
             this.Location.Location = new System.Drawing.Point(83, 3);
             this.Location.Name = "Location";
-            this.Location.Size = new System.Drawing.Size(628, 29);
+            this.Location.Size = new System.Drawing.Size(628, 25);
             this.Location.TabIndex = 0;
-            this.Location.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
+            this.Location.KeyDown += new System.Windows.Forms.KeyEventHandler(this.locationBox_KeyDown);
             // 
             // SearchBar
             // 
             this.SearchBar.BackColor = System.Drawing.Color.White;
             this.SearchBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SearchBar.Font = new System.Drawing.Font("Segoe UI Semilight", 12F);
+            this.SearchBar.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
             this.SearchBar.ForeColor = System.Drawing.Color.Black;
             this.SearchBar.Location = new System.Drawing.Point(717, 3);
             this.SearchBar.Name = "SearchBar";
-            this.SearchBar.Size = new System.Drawing.Size(282, 29);
+            this.SearchBar.Size = new System.Drawing.Size(282, 25);
             this.SearchBar.TabIndex = 3;
             this.SearchBar.Text = "Search";
             this.SearchBar.Click += new System.EventHandler(this.SearchBar_Click);
             this.SearchBar.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SearchBar_KeyPress);
             // 
-            // button1
+            // backwardBtn
             // 
-            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(3, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(34, 28);
-            this.button1.TabIndex = 1;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Search_Click);
+            this.backwardBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("backwardBtn.BackgroundImage")));
+            this.backwardBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.backwardBtn.FlatAppearance.BorderSize = 0;
+            this.backwardBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.backwardBtn.ForeColor = System.Drawing.Color.Black;
+            this.backwardBtn.Location = new System.Drawing.Point(3, 3);
+            this.backwardBtn.Name = "backwardBtn";
+            this.backwardBtn.Size = new System.Drawing.Size(34, 23);
+            this.backwardBtn.TabIndex = 1;
+            this.backwardBtn.UseVisualStyleBackColor = true;
+            this.backwardBtn.Click += new System.EventHandler(this.Search_Click);
             // 
             // tableContentLayout
             // 
             this.tableContentLayout.ColumnCount = 2;
-            this.tableContentLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.95808F));
-            this.tableContentLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 79.04192F));
+            this.tableContentLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 239F));
+            this.tableContentLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableContentLayout.Controls.Add(this.ContentGrid, 1, 0);
             this.tableContentLayout.Controls.Add(this.fileTreeView, 0, 0);
             this.tableContentLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableContentLayout.Location = new System.Drawing.Point(3, 43);
+            this.tableContentLayout.Location = new System.Drawing.Point(3, 38);
             this.tableContentLayout.Name = "tableContentLayout";
             this.tableContentLayout.RowCount = 1;
-            this.tableContentLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableContentLayout.Size = new System.Drawing.Size(1002, 683);
+            this.tableContentLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableContentLayout.Size = new System.Drawing.Size(1002, 688);
             this.tableContentLayout.TabIndex = 1;
             // 
             // ContentGrid
@@ -173,11 +172,11 @@
             this.ContentGrid.AllowUserToDeleteRows = false;
             this.ContentGrid.AllowUserToResizeColumns = false;
             this.ContentGrid.AllowUserToResizeRows = false;
-            this.ContentGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ContentGrid.BackgroundColor = System.Drawing.Color.White;
             this.ContentGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ContentGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.ContentGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
+            this.ContentGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
@@ -194,7 +193,7 @@
             this.SizeGrd});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI Semilight", 9.75F);
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -203,12 +202,12 @@
             this.ContentGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ContentGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.ContentGrid.GridColor = System.Drawing.Color.White;
-            this.ContentGrid.Location = new System.Drawing.Point(212, 3);
+            this.ContentGrid.Location = new System.Drawing.Point(242, 3);
             this.ContentGrid.Name = "ContentGrid";
             this.ContentGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI Semilight", 9.75F);
             dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -220,11 +219,10 @@
             this.ContentGrid.ShowCellToolTips = false;
             this.ContentGrid.ShowEditingIcon = false;
             this.ContentGrid.ShowRowErrors = false;
-            this.ContentGrid.Size = new System.Drawing.Size(787, 677);
+            this.ContentGrid.Size = new System.Drawing.Size(757, 682);
             this.ContentGrid.TabIndex = 7;
             this.ContentGrid.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.ContentGrid_CellMouseDoubleClick);
             this.ContentGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.ContentGrid_CellMouseDown);
-            this.ContentGrid.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ContentGrid_MouseClick);
             // 
             // IconGrd
             // 
@@ -234,29 +232,33 @@
             this.IconGrd.ReadOnly = true;
             this.IconGrd.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.IconGrd.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.IconGrd.Width = 17;
             // 
             // NameGrd
             // 
             this.NameGrd.HeaderText = "Name";
             this.NameGrd.Name = "NameGrd";
             this.NameGrd.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.NameGrd.Width = 200;
             // 
             // DateGrd
             // 
             this.DateGrd.HeaderText = "Date Modified";
             this.DateGrd.Name = "DateGrd";
             this.DateGrd.ReadOnly = true;
+            this.DateGrd.Width = 150;
             // 
             // SizeGrd
             // 
             this.SizeGrd.HeaderText = "Size";
             this.SizeGrd.Name = "SizeGrd";
             this.SizeGrd.ReadOnly = true;
+            this.SizeGrd.Width = 120;
             // 
             // fileTreeView
             // 
             this.fileTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fileTreeView.Font = new System.Drawing.Font("Segoe UI Semilight", 11F);
+            this.fileTreeView.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
             this.fileTreeView.FullRowSelect = true;
             this.fileTreeView.ImageIndex = 0;
             this.fileTreeView.ImageList = this.fileImageTreeList;
@@ -264,9 +266,8 @@
             this.fileTreeView.Name = "fileTreeView";
             this.fileTreeView.SelectedImageIndex = 0;
             this.fileTreeView.ShowLines = false;
-            this.fileTreeView.Size = new System.Drawing.Size(203, 677);
+            this.fileTreeView.Size = new System.Drawing.Size(233, 682);
             this.fileTreeView.TabIndex = 8;
-            this.fileTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
             // fileImageTreeList
             // 
@@ -276,6 +277,7 @@
             this.fileImageTreeList.Images.SetKeyName(1, "DD011-4.png");
             this.fileImageTreeList.Images.SetKeyName(2, "Disc008-4.png");
             this.fileImageTreeList.Images.SetKeyName(3, "DD012-4.png");
+            this.fileImageTreeList.Images.SetKeyName(4, "shell32_4.ico");
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -302,7 +304,7 @@
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.Width = 241;
             // 
-            // File_explorer
+            // FileExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -311,9 +313,9 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "File_explorer";
+            this.Name = "FileExplorer";
             this.Text = "Computer";
-            this.Load += new System.EventHandler(this.File_explorer_Load);
+            this.Load += new System.EventHandler(this.FileExplorer_Load);
             this.Header.ResumeLayout(false);
             this.Header.PerformLayout();
             this.tableHeaderLayout.ResumeLayout(false);
@@ -329,9 +331,9 @@
 
         private System.Windows.Forms.TableLayoutPanel Header;
         private System.Windows.Forms.TableLayoutPanel tableHeaderLayout;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button forwardBtn;
         private new System.Windows.Forms.TextBox Location;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button backwardBtn;
         private System.Windows.Forms.TextBox SearchBar;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
@@ -340,10 +342,10 @@
         private System.Windows.Forms.TableLayoutPanel tableContentLayout;
         public System.Windows.Forms.DataGridView ContentGrid;
         private System.Windows.Forms.TreeView fileTreeView;
+        private System.Windows.Forms.ImageList fileImageTreeList;
         private System.Windows.Forms.DataGridViewImageColumn IconGrd;
         private System.Windows.Forms.DataGridViewTextBoxColumn NameGrd;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateGrd;
         private System.Windows.Forms.DataGridViewTextBoxColumn SizeGrd;
-        private System.Windows.Forms.ImageList fileImageTreeList;
     }
 }

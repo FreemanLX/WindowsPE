@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.browseButton = new System.Windows.Forms.Button();
             this.BackgroundFitComboBox = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.BackgroundPreview = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BackgroundPreview)).BeginInit();
             this.SuspendLayout();
@@ -56,6 +56,16 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(934, 535);
             this.panel2.TabIndex = 2;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semilight", 11F);
+            this.label2.Location = new System.Drawing.Point(25, 67);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(451, 20);
+            this.label2.TabIndex = 22;
+            this.label2.Text = "Browse to the picture or video to make it your desktop background.";
             // 
             // browseButton
             // 
@@ -129,16 +139,6 @@
             this.label1.Size = new System.Drawing.Size(263, 25);
             this.label1.TabIndex = 1;
             this.label1.Text = "Choose a desktop background";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semilight", 11F);
-            this.label2.Location = new System.Drawing.Point(25, 67);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(451, 20);
-            this.label2.TabIndex = 22;
-            this.label2.Text = "Browse to the picture or video to make it your desktop background.";
             // 
             // PersonalizationForm
             // 

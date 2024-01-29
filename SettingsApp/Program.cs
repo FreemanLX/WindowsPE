@@ -10,8 +10,8 @@ namespace WindowsPE
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Data.settingsForm = new SettingsForm();
+            Data.settingsForm = new Settings.SettingsForm();
             Application.Run(Data.settingsForm);
-        }
+        }   
     }
 }

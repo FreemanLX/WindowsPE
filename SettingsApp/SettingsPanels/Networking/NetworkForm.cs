@@ -2,8 +2,9 @@
 using System.Windows.Forms;
 using SettingsApp.SettingsPanels.Networking;
 using System.Net.NetworkInformation;
+using NETWORKLIST;
 
-namespace WindowsPE
+namespace WindowsPE.Settings
 {
     public partial class NetworkForm : UserControl
     {
@@ -34,40 +35,41 @@ namespace WindowsPE
                 {
                     connectivityType = "Internet";
                 }
-                NetworkObject networkObject = new NetworkObject(network.GetName(), type, connectivityType)
+                NetworkObject networkObject = new NetworkObject(network.GetName(), type, connectivityType, "")
                 {
                     Location = new System.Drawing.Point(26, height)
                 };
                 privateNetworkLayout.Controls.Add(networkObject);
                 networkObject.Show();
-                height += networkObject.Size.Height + 10; - Windows PE Doesn't support NLM :(
+                height += networkObject.Size.Height + 10;
             }*/
-
-            //the .net way
+            
+            //the .net way 
             NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
             int height = activeNetworksLabel.Location.Y + 15;
             foreach(NetworkInterface networkInterface in adapters)
             {
+
+                if (networkInterface.OperationalStatus != OperationalStatus.Up || networkInterface.NetworkInterfaceType == NetworkInterfaceType.Loopback || networkInterface.NetworkInterfaceType == NetworkInterfaceType.Tunnel)
+                    continue;
+
                 IPInterfaceProperties properties = networkInterface.GetIPProperties();
-                if(networkInterface.OperationalStatus == OperationalStatus.Up && networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                string nicName = (!string.IsNullOrWhiteSpace(properties.DnsSuffix)) ? properties.DnsSuffix : networkInterface.Name;
+                NetworkObject networkObject = new NetworkObject(nicName, "Private Network", "Limited", networkInterface.NetworkInterfaceType.ToString())
                 {
-                    string nicName = (!string.IsNullOrWhiteSpace(properties.DnsSuffix)) ? properties.DnsSuffix : networkInterface.Name;
-                    NetworkObject networkObject = new NetworkObject(nicName, "Private Network", "Limited", networkInterface.NetworkInterfaceType.ToString())
-                    {
                         Location = new System.Drawing.Point(26, height)
-                    };
-                    privateNetworkLayout.Controls.Add(networkObject);
-                    networkObject.Show();
-                    height += networkObject.Size.Height + 10;
-                }
+                };
+                privateNetworkLayout.Controls.Add(networkObject);
+                networkObject.Show();
+                height += networkObject.Size.Height;
             }
+            
         }
 
         private void networking_Load(object sender, EventArgs e)
         {
             GetDnsAdresses();
-           NetworkChange.NetworkAddressChanged += new
-            NetworkAddressChangedEventHandler(AddressChangedCallback);
+            NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
         }
 
         private void AddressChangedCallback(object sender, EventArgs e)
@@ -83,12 +85,13 @@ namespace WindowsPE
 
         private void filesharingSettings_Click(object sender, EventArgs e)
         {
-
+            FilesharingForm filesharingForm = new FilesharingForm();
+            filesharingForm.ShowDialog();
         }
 
         private void firewallSettings_Click(object sender, EventArgs e)
         {
-
+            Data.settingsForm.ChangePanel(new FirewallForm());
         }
 
         private void privateNetworkLayout_Paint(object sender, PaintEventArgs e)

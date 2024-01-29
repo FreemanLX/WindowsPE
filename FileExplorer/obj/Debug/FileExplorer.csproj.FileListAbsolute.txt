@@ -1,9 +1,0 @@
-E:\WindowsPE_Projects\bin\System32\FileExplorer.exe.config
-E:\WindowsPE_Projects\bin\System32\FileExplorer.exe
-E:\WindowsPE_Projects\bin\System32\FileExplorer.pdb
-E:\WindowsPE_Projects\FileExplorer\obj\Debug\WindowsPE.File_explorer.resources
-E:\WindowsPE_Projects\FileExplorer\obj\Debug\FileExplorer.Properties.Resources.resources
-E:\WindowsPE_Projects\FileExplorer\obj\Debug\FileExplorer.csproj.GenerateResource.cache
-E:\WindowsPE_Projects\FileExplorer\obj\Debug\FileExplorer.csproj.CoreCompileInputs.cache
-E:\WindowsPE_Projects\FileExplorer\obj\Debug\FileExplorer.exe
-E:\WindowsPE_Projects\FileExplorer\obj\Debug\FileExplorer.pdb

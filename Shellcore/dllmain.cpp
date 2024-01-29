@@ -161,7 +161,8 @@ extern "C"
                      SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
 	 }
 
-	 bool DllExport ChangeBackgroundWallpaper(){
+	 bool DllExport ChangeBackgroundWallpaper()
+	 {
 		   OPENFILENAMEA OpenDialog = {0};
 		   char filePath[MAX_PATH] = "";
 		   OpenDialog.lStructSize = sizeof(OpenDialog);
@@ -184,7 +185,7 @@ extern "C"
 		return displaySettings.Set();
 	}
 
-	bool DllExport GetAvailableScreenResolutionIndex(int** output, int& size){
+	bool DllExport GetAvailableScreens(int** output, int& size){
 	    DISPLAY_DEVICE display_device = {0};
 		display_device.cb = sizeof(DISPLAY_DEVICE);
 		int i = 0;
@@ -200,6 +201,40 @@ extern "C"
 		*output = indexNoList.ToArray();
 		size = indexNoList.Size();
 		return true;
+	}
+
+
+	bool DllExport GetScreenCurrentResolution(int display, char* &resolution) 
+	{
+		DISPLAY_DEVICEW display_device = { 0 };
+		display_device.cb = sizeof(DISPLAY_DEVICEW);
+
+		if (EnumDisplayDevicesW(NULL, display, &display_device, EDD_GET_DEVICE_INTERFACE_NAME)) {
+			DEVMODE devmode = { 0 };
+			devmode.dmSize = sizeof(DEVMODE);
+			if (EnumDisplaySettings(display_device.DeviceName, ENUM_CURRENT_SETTINGS, &devmode) != 0) {
+				char message[24];	
+				sprintf_s(message, "%dx%d", devmode.dmPelsWidth, devmode.dmPelsHeight);
+				message[strlen(message) + 1] = '\0';
+				resolution = (char*)CoTaskMemAlloc(strlen(message) + 1);
+				strcpy(resolution, message);
+				resolution[strlen(resolution) + 1] = '\0';
+				return true;
+			}
+		}
+		return false;
+
+	}
+
+	bool DllExport CheckScreenIsDisabled(int display, bool &output)
+	{
+		DISPLAY_DEVICEW display_device = { 0 };
+		display_device.cb = sizeof(DISPLAY_DEVICEW);
+		if (EnumDisplayDevicesW(NULL, display, &display_device, EDD_GET_DEVICE_INTERFACE_NAME)) {
+			 output = (!(display_device.StateFlags) & DISPLAY_DEVICE_ATTACHED_TO_DESKTOP);
+			 return true;
+		}
+		return false;
 	}
 
 	bool DllExport EnumScreenResolutionU(int display, char** &output, int &size){

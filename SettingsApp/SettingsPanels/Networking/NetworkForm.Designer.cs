@@ -1,4 +1,4 @@
-﻿namespace WindowsPE
+﻿namespace WindowsPE.Settings
 {
     partial class NetworkForm
     {

@@ -4,13 +4,11 @@ using WindowsPE.Algorithms;
 
 namespace WindowsPE.Settings
 {
-    public partial class FilesharingForm : UserControl
+    public partial class FilesharingForm : Form
     {
-        ShareWizard.ShareDataLayout shareDataLayout;
         public FilesharingForm() 
         {
             InitializeComponent();
-            shareDataLayout = new ShareWizard.ShareDataLayout() {Dock = DockStyle.Fill};
         }
         
         private void FilesharingForm_Load(object sender, EventArgs e)
@@ -21,9 +19,8 @@ namespace WindowsPE.Settings
             AdaptiveMethods.IntPtr2Array(netShare, size, out NetShareName);
             AdaptiveMethods.IntPtr2Array(netPaths, size, out NetPaths);
             for(int i = 0; i<NetShareName.Length; i++){
-               shareDataLayout.insertData(NetShareName[i], NetPaths[i], "SMB");
+               shareData.Rows.Add(NetShareName[i], NetPaths[i], "Windows");
             }
-            filesharingContainer.Controls.Add(shareDataLayout, 0, 0);
         }
     }
 }
